@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tradosaurus — A Nifty swing-trading toolkit for serious traders. Five validated strategies, full custom builder, honest backtests across 9 years of data.">
+    <title>Tradosaurus — Swing trading, backed by numbers.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="#numbers">Numbers</a>
+            <a href="#tour">Product</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="download.html" class="btn btn-primary">Download <span class="arrow">→</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-grid">
+            <div>
+                <span class="eyebrow reveal">For Indian Swing Traders</span>
+                <h1 class="reveal" style="--reveal-delay: 80ms">
+                    Swing trading,<br>
+                    backed by <span class="accent">numbers.</span>
+                </h1>
+                <p class="lede reveal" style="--reveal-delay: 160ms">
+                    Tradosaurus is a Nifty swing-trading desktop terminal that shows you every strategy's worst year — not just its best. Five validated strategies, a full custom builder, and honest backtests across nine years of NSE data.
+                </p>
+                <div class="hero-cta reveal" style="--reveal-delay: 240ms">
+                    <a href="download.html" class="btn btn-primary">Download for Windows <span class="arrow">→</span></a>
+                    <a href="#pricing" class="btn btn-secondary">See pricing</a>
+                </div>
+                <div class="hero-meta reveal" style="--reveal-delay: 320ms">
+                    <span><strong>v0.1.0</strong> · Updated this week</span>
+                    <span><strong>~150 MB</strong> · Windows 10/11</span>
+                    <span><strong>Free to start</strong></span>
+                </div>
+            </div>
+
+            <!-- Hero mockup: faked desktop window of System Summary tab -->
+            <div class="reveal" style="--reveal-delay: 400ms">
+                <div class="window">
+                    <div class="window-bar">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span class="window-title">Tradosaurus — Nifty Swing Terminal</span>
+                    </div>
+                    <div class="mock-summary">
+                        <div class="mock-tabs">
+                            <a href="#tour-universe">Universe</a>
+                            <a href="#tour-screener">Screener</a>
+                            <a href="#tour-backtest">Backtest</a>
+                            <a href="#tour-summary" class="active">System Summary</a>
+                            <a href="#tour-builder">Strategy Builder</a>
+                        </div>
+                        <div class="mock-cards">
+                            <div class="mock-card">
+                                <div class="lbl">Final Equity</div>
+                                <div class="val green">₹14.49 L</div>
+                            </div>
+                            <div class="mock-card">
+                                <div class="lbl">CAGR</div>
+                                <div class="val green">+4.16%</div>
+                            </div>
+                            <div class="mock-card">
+                                <div class="lbl">Max Drawdown</div>
+                                <div class="val red">−34.5%</div>
+                            </div>
+                            <div class="mock-card">
+                                <div class="lbl">Avg Days</div>
+                                <div class="val">17.8 d</div>
+                            </div>
+                        </div>
+                        <div class="mock-chart">
+                            <svg viewBox="0 0 600 130" preserveAspectRatio="none">
+                                <!-- subtle grid -->
+                                <line x1="0" y1="32" x2="600" y2="32" stroke="#D4CDBE" stroke-width="0.5" stroke-dasharray="2 4"/>
+                                <line x1="0" y1="65" x2="600" y2="65" stroke="#D4CDBE" stroke-width="0.5" stroke-dasharray="2 4"/>
+                                <line x1="0" y1="98" x2="600" y2="98" stroke="#D4CDBE" stroke-width="0.5" stroke-dasharray="2 4"/>
+                                <!-- equity curve -->
+                                <path d="M0,98 L40,92 L80,86 L120,79 L160,82 L200,68 L240,71 L280,55 L320,58 L360,42 L400,48 L440,30 L480,38 L520,22 L560,28 L600,15"
+                                      stroke="#1A6E3A" stroke-width="2" fill="none" stroke-linejoin="round"/>
+                                <!-- area under curve -->
+                                <path d="M0,98 L40,92 L80,86 L120,79 L160,82 L200,68 L240,71 L280,55 L320,58 L360,42 L400,48 L440,30 L480,38 L520,22 L560,28 L600,15 L600,130 L0,130 Z"
+                                      fill="#1A6E3A" fill-opacity="0.08"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ STATS BAR ============ -->
+<div class="container">
+    <div class="stats reveal">
+        <div class="stat">
+            <span class="stat-num" data-target="9">0</span>
+            <span class="stat-lbl">Years backtested</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num" data-target="500">0</span>
+            <span class="stat-lbl">NSE stocks scanned</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num" data-target="5">0</span>
+            <span class="stat-lbl">Strategies built-in</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num" data-target="2425">0</span>
+            <span class="stat-lbl">Trades validated (TPB)</span>
+        </div>
+    </div>
+</div>
+
+<!-- ============ THE NUMBERS TABLE ============ -->
+<section class="section" id="numbers">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="eyebrow">What most tools hide</span>
+            <h2>We show you the worst year.<br>Not just the best.</h2>
+            <p class="lede" style="margin-top: var(--s-4)">
+                Real backtests on the full Nifty 500 over nine years. Slippage and commissions included. No cherry-picking, no fairy-tale equity curves.
+            </p>
+        </div>
+
+        <div class="reveal" style="--reveal-delay: 100ms">
+            <table class="numbers-table">
+                <thead>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Trades</th>
+                        <th>Win&nbsp;Rate</th>
+                        <th>Profit&nbsp;Factor</th>
+                        <th>Worst&nbsp;Year</th>
+                        <th>Tier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="strat">Trend Pullback Breakout<span class="sub">Stage-2 continuation, ATR-contraction trigger</span></td>
+                        <td class="num">2,425</td>
+                        <td class="num">43.2%</td>
+                        <td class="num green">1.25</td>
+                        <td class="num red">−0.22 R</td>
+                        <td><span class="badge badge-free">Free</span></td>
+                    </tr>
+                    <tr>
+                        <td class="strat">Darvas Box Breakout<span class="sub">Multi-week base, volume confirmation</span></td>
+                        <td class="num">1,991</td>
+                        <td class="num">46.3%</td>
+                        <td class="num green">1.32</td>
+                        <td class="num red">−0.37 R</td>
+                        <td><span class="badge badge-free">Free</span></td>
+                    </tr>
+                    <tr>
+                        <td class="strat">Weekly Higher-High Breakout<span class="sub">Consolidation breakout on weekly close</span></td>
+                        <td class="num">2,141</td>
+                        <td class="num">44.8%</td>
+                        <td class="num green">1.22</td>
+                        <td class="num red">−0.42 R</td>
+                        <td><span class="badge badge-pro">Pro</span></td>
+                    </tr>
+                    <tr>
+                        <td class="strat">Williams %R Mean Reversion*<span class="sub">Pullback in trend, oversold reversal</span></td>
+                        <td class="num">682</td>
+                        <td class="num">46.9%</td>
+                        <td class="num green">1.47</td>
+                        <td class="pending">Pending</td>
+                        <td><span class="badge badge-pro">Pro</span></td>
+                    </tr>
+                    <tr>
+                        <td class="strat">Bollinger Band Squeeze*<span class="sub">Volatility contraction breakout</span></td>
+                        <td class="pending">Pending</td>
+                        <td class="pending">Pending</td>
+                        <td class="pending">Pending</td>
+                        <td class="pending">Pending</td>
+                        <td><span class="badge badge-pro">Pro</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="table-caveat reveal">
+                Williams numbers are preliminary; full robustness validation pending. We're publishing them as-is rather than wait. Bollinger Squeeze validation is in progress and will appear here when complete.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FEATURES (DARK) ============ -->
+<section class="section dark">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="eyebrow on-dark">Everything you need to trade with conviction</span>
+            <h2 style="color: var(--ink-on-dark)">Built for serious<br>swing traders.</h2>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature reveal">
+                <span class="num">01 / Strategies</span>
+                <h3>Five validated systems</h3>
+                <p>TPB, DBO, WHB, Williams %R, Bollinger Squeeze — each with reproducible backtests, parameter plateau testing, and per-year performance.</p>
+            </div>
+            <div class="feature reveal" style="--reveal-delay: 80ms">
+                <span class="num">02 / Builder</span>
+                <h3>Custom rule engine</h3>
+                <p>Build your own strategies with 40+ indicators, AND/OR/NOT logic, and 10 comparison operators. No code, no curve-fitting traps.</p>
+            </div>
+            <div class="feature reveal" style="--reveal-delay: 160ms">
+                <span class="num">03 / Honesty</span>
+                <h3>Friction included</h3>
+                <p>0.2% slippage per side, 0.05% commission, gap-down stops honored. Numbers you can actually trade against.</p>
+            </div>
+            <div class="feature reveal" style="--reveal-delay: 240ms">
+                <span class="num">04 / Universe</span>
+                <h3>Full Indian breadth</h3>
+                <p>Nifty 50, 100, 500, Midcap 150, Smallcap 250. Every NSE-listed stock that matters — fetched fresh from Yahoo in seven minutes.</p>
+            </div>
+            <div class="feature reveal" style="--reveal-delay: 320ms">
+                <span class="num">05 / Portfolio</span>
+                <h3>Real equity simulation</h3>
+                <p>1% risk per trade, max 10 concurrent positions. See actual CAGR and drawdown — not per-trade fairy tales.</p>
+            </div>
+            <div class="feature reveal" style="--reveal-delay: 400ms">
+                <span class="num">06 / Export</span>
+                <h3>Your data, exported</h3>
+                <p>Every signal, every trade, every metric exports to Excel. Audit it, share it, build on it. We don't lock anything inside the app.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="eyebrow">From download to first signal</span>
+            <h2>Five minutes, three steps.</h2>
+        </div>
+
+        <div class="steps">
+            <div class="step reveal">
+                <h3>Download &amp; install</h3>
+                <p>Single Windows installer. No accounts, no email captures, no cloud lock-in. Free tier works forever.</p>
+            </div>
+            <div class="step reveal" style="--reveal-delay: 100ms">
+                <h3>Pick a universe</h3>
+                <p>Nifty 50 for liquidity, Midcap 150 for opportunity, Nifty 500 for breadth. Data fetches once, reuses across runs.</p>
+            </div>
+            <div class="step reveal" style="--reveal-delay: 200ms">
+                <h3>Trade or test</h3>
+                <p>Run today's screener for live signals, or backtest nine years of history to see how your strategy would have done.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ PRODUCT TOUR ============ -->
+<section class="section cream-alt" id="tour">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="eyebrow">The entire toolkit</span>
+            <h2>Five tabs.<br>One workflow. Zero noise.</h2>
+        </div>
+
+        <div class="tour">
+            <!-- Tab 1: Universe -->
+            <div class="tour-row reveal" id="tour-universe">
+                <div class="tour-text">
+                    <div class="tour-tag">01 — Universe</div>
+                    <h3>Pick your index. Fetch fresh data.</h3>
+                    <p>One click downloads the full Nifty 500 with ten years of daily history. Reuse across strategies — fetch once, scan everywhere.</p>
+                    <ul>
+                        <li>8 NSE indices, 500+ stocks</li>
+                        <li>~7 minute first fetch, then offline</li>
+                        <li>Auto split-adjusted OHLCV</li>
+                    </ul>
+                </div>
+                <div class="tour-img">
+                    <img src="images/screenshot-universe.png" alt="Universe tab — select index and fetch data" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="placeholder" style="display:none">[Screenshot · Universe]</div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Screener -->
+            <div class="tour-row reverse reveal" id="tour-screener">
+                <div class="tour-text">
+                    <div class="tour-tag">02 — Screener</div>
+                    <h3>Today's signals, ranked by quality.</h3>
+                    <p>Every stock evaluated against your strategy on the latest bar. The right panel tells you exactly why each stock fired — or why it didn't.</p>
+                    <ul>
+                        <li>Ranked by setup strength</li>
+                        <li>Failed-condition explanations</li>
+                        <li>Entry, stop, target, R:R per signal</li>
+                    </ul>
+                </div>
+                <div class="tour-img">
+                    <img src="images/screenshot-screener.png" alt="Screener tab — daily signals" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="placeholder" style="display:none">[Screenshot · Screener]</div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Backtest -->
+            <div class="tour-row reveal" id="tour-backtest">
+                <div class="tour-text">
+                    <div class="tour-tag">03 — Backtest</div>
+                    <h3>Nine years of trades, every detail.</h3>
+                    <p>Pick any strategy, any risk:reward, any starting capital. Get every trade with entry, stop, target, exit, days held, and R-multiple — instantly.</p>
+                    <ul>
+                        <li>Tabular trade-by-trade output</li>
+                        <li>Sortable, filterable, exportable</li>
+                        <li>Stop-honored gap-downs included</li>
+                    </ul>
+                </div>
+                <div class="tour-img">
+                    <img src="images/screenshot-backtest.png" alt="Backtest tab — trade log" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="placeholder" style="display:none">[Screenshot · Backtest]</div>
+                </div>
+            </div>
+
+            <!-- Tab 4: System Summary -->
+            <div class="tour-row reverse reveal" id="tour-summary">
+                <div class="tour-text">
+                    <div class="tour-tag">04 — System Summary</div>
+                    <h3>Final equity. CAGR. Drawdown. The truth.</h3>
+                    <p>One screen tells you whether the strategy actually made money. Final equity, CAGR, max drawdown, hit rate, per-year performance — no spin.</p>
+                    <ul>
+                        <li>Portfolio-level metric cards</li>
+                        <li>Year-by-year P&amp;L breakdown</li>
+                        <li>Real CAGR after slippage</li>
+                    </ul>
+                </div>
+                <div class="tour-img">
+                    <img src="images/screenshot-summary.png" alt="System Summary tab — portfolio metrics" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="placeholder" style="display:none">[Screenshot · System Summary]</div>
+                </div>
+            </div>
+
+            <!-- Tab 5: Strategy Builder -->
+            <div class="tour-row reveal" id="tour-builder">
+                <div class="tour-text">
+                    <div class="tour-tag">05 — Strategy Builder · Pro</div>
+                    <h3>Build your own. No code.</h3>
+                    <p>Visual rule editor with AND/OR/NOT groups. 40+ indicators, 10 comparison operators. Save, share, backtest your own ideas — same engine as the built-ins.</p>
+                    <ul>
+                        <li>Drag-and-drop rule tree</li>
+                        <li>40+ technical indicators</li>
+                        <li>Same backtest engine, no shortcuts</li>
+                    </ul>
+                </div>
+                <div class="tour-img">
+                    <img src="images/screenshot-builder.png" alt="Strategy Builder tab — visual rule editor" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="placeholder" style="display:none">[Screenshot · Strategy Builder]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section" id="pricing">
+    <div class="container">
+        <div class="sec-head center reveal">
+            <span class="eyebrow">Pricing</span>
+            <h2>Honest pricing.<br>Real value.</h2>
+            <p class="lede" style="margin-top: var(--s-4)">One annual fee. No upsells. No surprise renewals.</p>
+        </div>
+
+        <div class="pricing">
+            <div class="plan reveal">
+                <div class="plan-tag">Free Forever</div>
+                <div class="plan-price">₹0<span class="small">/ forever</span></div>
+                <div class="plan-sub">Perfect to evaluate. Genuinely useful — not crippleware.</div>
+                <ul class="plan-features">
+                    <li>TPB strategy + 2 variants</li>
+                    <li>DBO strategy + 2 variants</li>
+                    <li>Full Nifty universe (500 stocks)</li>
+                    <li>Full backtester engine</li>
+                    <li>Daily screener with explanations</li>
+                    <li>Portfolio simulator</li>
+                    <li>Excel export, all data</li>
+                </ul>
+                <a href="download.html" class="btn btn-secondary">Download free <span class="arrow">→</span></a>
+            </div>
+
+            <div class="plan highlight reveal" style="--reveal-delay: 100ms">
+                <span class="badge-recommend">Recommended</span>
+                <div class="plan-tag">Pro · Annual</div>
+                <div class="plan-price">₹4,999<span class="small">/ year</span></div>
+                <div class="plan-sub">Everything plus advanced strategies and the custom builder.</div>
+                <ul class="plan-features">
+                    <li class="heading">Everything in Free, plus —</li>
+                    <li>Williams %R Mean Reversion</li>
+                    <li>Bollinger Band Squeeze</li>
+                    <li>Weekly Higher-High Breakout</li>
+                    <li>Custom Strategy Builder · 40+ indicators</li>
+                    <li>All future strategies included</li>
+                    <li>Email support · 24-hour response</li>
+                    <li>7-day refund · no questions asked</li>
+                </ul>
+                <div class="razorpay-slot" id="razorpay-button-placeholder">
+                    RAZORPAY_BUTTON_PLACEHOLDER<br>
+                    <small style="opacity: 0.7">Replace this block with your Razorpay Payment Button embed code</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section cream-alt" id="faq">
+    <div class="container container-narrow">
+        <div class="sec-head center reveal">
+            <span class="eyebrow">FAQ</span>
+            <h2>Questions, answered honestly.</h2>
+        </div>
+
+        <div class="faq reveal">
+            <div class="faq-item">
+                <button class="faq-q">Is this SEBI-registered investment advice? <span class="faq-icon"></span></button>
+                <div class="faq-a"><div class="faq-a-inner">No. Tradosaurus is an analytical tool for educational purposes. We are not SEBI-registered Research Analysts. You make your own trading decisions.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Do you guarantee returns? <span class="faq-icon"></span></button>
+                <div class="faq-a"><div class="faq-a-inner">No. Any tool that guarantees returns is lying to you. Backtesting shows what would have happened — it is not a promise of future performance. Trading involves risk of loss.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">What markets are supported? <span class="faq-icon"></span></button>
+                <div class="faq-a"><div class="faq-a-inner">Indian equities listed on NSE — Nifty 50, Next 50, 100, Midcap 150, Smallcap 250, and Nifty 500. No intraday, options, crypto, or global markets, by design. We do one thing, and we do it honestly.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Do I need any coding experience? <span class="faq-icon"></span></button>
+                <div class="faq-a"><div class="faq-a-inner">None. The app is fully GUI-based with dropdown strategies. The Custom Strategy Builder uses a visual rule editor — no Python or scripting required.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Why does Windows show a SmartScreen warning? <span class="faq-icon"></span></button>
+                <div class="faq-a"><div class="faq-a-inner">Because we are a small independent developer who has not yet purchased a code-signing certificate (these cost ₹15,000+ per year). Click "More info" then "Run anyway". We'll move to a signed binary as we grow.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">What's your refund policy? <span class="faq-icon"></span></button>
+                <div class="faq-a"><div class="faq-a-inner">Seven days, no questions asked. Email us from the address used at purchase. Refund is processed within 3 business days.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">What about future updates? <span class="faq-icon"></span></button>
+                <div class="faq-a"><div class="faq-a-inner">Annual license includes all updates released during your subscription period. Active development priorities: real-time alerts, post-trade journal, and walk-forward testing.</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ TESTIMONIALS (HONEST PLACEHOLDER) ============ -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head center reveal">
+            <span class="eyebrow">Trusted by early users</span>
+            <h2>Real reviews, coming soon.</h2>
+            <p class="lede" style="margin-top: var(--s-4)">
+                We don't fabricate testimonials. As we onboard our first paying users, their honest feedback will appear here. If you'd like to be among them, download Tradosaurus today.
+            </p>
+        </div>
+
+        <div class="testimonial-empty reveal">
+            <span class="ribbon">Coming soon</span>
+            <blockquote>"Your honest review here."</blockquote>
+            <cite>— Be one of our first reviewers</cite>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="section dark">
+    <div class="cta-final">
+        <span class="eyebrow on-dark reveal">The bottom line</span>
+        <h2 class="reveal" style="--reveal-delay: 80ms">
+            Stop guessing.<br>
+            Start <span class="accent">measuring.</span>
+        </h2>
+        <p class="lede reveal" style="--reveal-delay: 160ms">
+            Download Tradosaurus free. Pay only when you want the advanced strategies.
+        </p>
+        <div class="btns reveal" style="--reveal-delay: 240ms">
+            <a href="download.html" class="btn btn-primary on-dark">Download for Windows <span class="arrow">→</span></a>
+            <a href="#pricing" class="btn btn-secondary on-dark">See pricing</a>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India 🇮🇳</p>
+            </div>
+            <div>
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#numbers">The numbers</a></li>
+                    <li><a href="#tour">Product tour</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="download.html">Download</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="refund.html">Refund policy</a></li>
+                    <li><a href="terms.html">Terms of service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="mailto:support@tradosaurus.in">support@tradosaurus.in</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- ============ JS ============ -->
+<script>
+// Sticky nav background on scroll
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// Mobile nav toggle
+const navToggle = document.getElementById('navToggle');
+if (navToggle) {
+    navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+}
+
+// Reveal-on-scroll
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+        if (e.isIntersecting) {
+            e.target.classList.add('in');
+            revealObserver.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+// Animated counters
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseFloat(el.dataset.target);
+        const duration = 1500;
+        const start = performance.now();
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        const isInt = Number.isInteger(target);
+        const fmt = (v) => isInt
+            ? Math.round(v).toLocaleString('en-IN')
+            : v.toFixed(2);
+        const tick = (now) => {
+            const t = Math.min(1, (now - start) / duration);
+            const v = target * easeOutCubic(t);
+            el.textContent = fmt(v);
+            if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        counterObserver.unobserve(el);
+    });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num[data-target]').forEach((el) => counterObserver.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach((q) => {
+    q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const ans  = item.querySelector('.faq-a');
+        const open = item.classList.toggle('open');
+        ans.style.maxHeight = open ? ans.scrollHeight + 'px' : '0';
+    });
+});
+</script>
+</body>
+</html>
