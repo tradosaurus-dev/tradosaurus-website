@@ -24,6 +24,20 @@
             </span>
             Tradosaurus
         </a>
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 1V12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                <path d="M12 20V12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                <path d="M4.22 4.22L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                <path d="M19.78 19.78L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                <path d="M21 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                <path d="M3 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                <path d="M4.22 19.78L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                <path d="M19.78 4.22L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+            </svg>
+        </button>
         <nav class="nav-links">
             <a href="#numbers">Numbers</a>
             <a href="#tour">Product</a>
@@ -407,7 +421,7 @@
             <div class="plan highlight reveal" style="--reveal-delay: 100ms">
                 <span class="badge-recommend">Recommended</span>
                 <div class="plan-tag">Pro · Annual</div>
-                <div class="plan-price">₹4,999<span class="small">/ year</span></div>
+                <div class="plan-price">₹2,999<span class="small">/ year</span></div>
                 <div class="plan-sub">Everything plus advanced strategies and the custom builder.</div>
                 <ul class="plan-features">
                     <li class="heading">Everything in Free, plus —</li>
@@ -419,9 +433,15 @@
                     <li>Email support · 24-hour response</li>
                     <li>7-day refund · no questions asked</li>
                 </ul>
-                <div class="razorpay-slot" id="razorpay-button-placeholder">
-                    RAZORPAY_BUTTON_PLACEHOLDER<br>
-                    <small style="opacity: 0.7">Replace this block with your Razorpay Payment Button embed code</small>
+                <!-- Razorpay payment button — the only CTA on this card. -->
+                <!-- Razorpay's <script> renders its own styled button inside -->
+                <!-- the wrapper. Wrapper just gives it consistent spacing.   -->
+                <div class="plan-activate-wrapper">
+                    <form>
+                        <script src="https://checkout.razorpay.com/v1/payment-button.js"
+                                data-payment_button_id="pl_SlAYmJSMId7WKZ"
+                                async></script>
+                    </form>
                 </div>
             </div>
         </div>

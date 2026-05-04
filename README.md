@@ -67,12 +67,12 @@ The download button on `download.html` points to a GitHub Releases asset URL. To
 1. In your GitHub repo, go to Releases → "Draft a new release"
 2. Tag: v0.1.0
 3. Title: "Tradosaurus 0.1.0"
-4. Attach your built SwingTradingTerminal-Windows.zip as a release asset
+4. Attach your built Tradosaurus-Windows.zip as a release asset
 5. Publish release
 ```
 
 The download URL in `download.html` is already in the right format:
-`github.com/USER/REPO/releases/latest/download/SwingTradingTerminal-Windows.zip`
+`github.com/USER/REPO/releases/latest/download/Tradosaurus-Windows.zip`
 
 `/releases/latest/download/` always points to the most recent release, so you never have to update the link when you ship a new version.
 

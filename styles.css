@@ -945,6 +945,74 @@ p { color: var(--ink-soft); }
     padding: var(--s-8) 0 var(--s-5);
     border-top: 1px solid rgba(245,241,232,0.08);
 }
+
+/* ---------- Pricing card CTA wrapper ---------- */
+/* Wraps the Razorpay-rendered button on the Pro plan card so it has   */
+/* consistent vertical spacing within the card. The button itself is   */
+/* styled by Razorpay's payment-button.js and we don't override it.    */
+.plan-activate-wrapper {
+    text-align: center;
+    padding: var(--s-6) 0;
+}
+
+/* ---------- Theme Toggle Button ---------- */
+.theme-toggle-btn {
+    position: fixed;
+    top: var(--s-4);
+    right: var(--s-4);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--paper-bright);
+    border: 1px solid var(--rule-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--t-fast);
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.theme-toggle-btn:hover {
+    background: var(--paper);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform var(--t-fast);
+}
+
+.theme-toggle-btn:hover svg {
+    transform: rotate(15deg);
+}
+
+/* Dark mode variables */
+[data-theme="dark"] {
+    --paper: #1A1A1A;
+    --paper-soft: #242424;
+    --paper-bright: #2D2D2D;
+    --ink: #E0E0E0;
+    --ink-soft: #B0B0B0;
+    --ink-muted: #888888;
+    --ink-faint: #555555;
+    --rule: #404040;
+    --rule-soft: #333333;
+    --ink-on-dark: #E0E0E0;
+    --ink-on-dark-soft: #B0B0B0;
+    --bg-dark: #121212;
+    --bg-dark-alt: #1E1E1E;
+    --accent: #4CAF50;
+    --accent-bright: #66BB6A;
+    --loss: #F44336;
+}
 .footer-grid {
     display: grid;
     grid-template-columns: 1fr;
