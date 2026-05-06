@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Swing Trading &mdash; Tradosaurus</title>
+    <meta name="description" content="Free, honest learning resources for Indian swing traders. Backtested strategies, risk management, NSE-specific guides. Built by traders, for traders.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        /* ============ LEARN PAGE STYLES ============ */
+        /* Inline so we don't have to touch styles.css for this single page. */
+        /* If/when we add more learn-specific patterns, move these to styles.css. */
+
+        .learn-hero {
+            padding: var(--s-9) 0 var(--s-7);
+            background: var(--paper);
+            border-bottom: 1px solid var(--rule-soft);
+        }
+        .learn-hero h1 {
+            font-family: var(--display);
+            font-size: clamp(48px, 7vw, 96px);
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin: var(--s-4) 0 var(--s-5);
+            color: var(--ink);
+        }
+        .learn-hero .lede {
+            font-size: clamp(18px, 2vw, 22px);
+            line-height: 1.5;
+            color: var(--ink-soft);
+            max-width: 680px;
+            margin-bottom: var(--s-5);
+        }
+        .learn-hero .meta-row {
+            display: flex;
+            gap: var(--s-6);
+            flex-wrap: wrap;
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .learn-hero .meta-row span strong {
+            color: var(--ink);
+            font-family: var(--mono);
+        }
+
+        /* Category nav — horizontal pills, scrolls on mobile */
+        .category-nav {
+            position: sticky;
+            top: 64px;
+            z-index: 50;
+            background: var(--paper);
+            border-bottom: 1px solid var(--rule-soft);
+            padding: var(--s-3) 0;
+        }
+        .category-nav-inner {
+            display: flex;
+            gap: var(--s-3);
+            overflow-x: auto;
+            padding: 0 var(--s-5);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .category-nav-inner::-webkit-scrollbar { display: none; }
+        .category-pill {
+            flex-shrink: 0;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink-muted);
+            border: 1px solid var(--rule-soft);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            background: var(--paper-bright);
+        }
+        .category-pill:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+        .category-pill.active {
+            color: var(--paper);
+            background: var(--ink);
+            border-color: var(--ink);
+        }
+
+        /* Category section */
+        .category-section {
+            padding: var(--s-8) 0 var(--s-7);
+            border-bottom: 1px solid var(--rule-soft);
+            scroll-margin-top: 130px;  /* clear the sticky nav (64px) + category nav (~50px) when jumping via anchor */
+        }
+        .category-section:last-child { border-bottom: none; }
+        .category-header {
+            display: flex;
+            align-items: baseline;
+            gap: var(--s-4);
+            margin-bottom: var(--s-6);
+            flex-wrap: wrap;
+        }
+        .category-number {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .category-header h2 {
+            font-family: var(--display);
+            font-size: clamp(32px, 4vw, 48px);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            margin: 0;
+        }
+        .category-header p {
+            flex-basis: 100%;
+            font-size: 17px;
+            line-height: 1.6;
+            color: var(--ink-soft);
+            max-width: 720px;
+            margin: var(--s-2) 0 0 0;
+        }
+
+        /* Article grid */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: var(--s-5);
+        }
+
+        /* Individual article card */
+        .article-card {
+            background: var(--paper-bright);
+            border: 1px solid var(--rule-soft);
+            border-radius: 12px;
+            padding: var(--s-5);
+            display: flex;
+            flex-direction: column;
+            gap: var(--s-3);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .article-card:hover {
+            border-color: var(--ink);
+            transform: translateY(-2px);
+        }
+        .article-card .meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ink-muted);
+        }
+        .article-card .meta .difficulty {
+            color: var(--accent);
+        }
+        .article-card h3 {
+            font-family: var(--display);
+            font-size: 22px;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--ink);
+            margin: 0;
+        }
+        .article-card p {
+            font-size: 15px;
+            line-height: 1.55;
+            color: var(--ink-soft);
+            margin: 0;
+            flex: 1;
+        }
+        .article-card .read-more {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--accent);
+            margin-top: auto;
+            padding-top: var(--s-3);
+            border-top: 1px solid var(--rule-soft);
+        }
+
+        /* Coming-soon state — articles that aren't published yet */
+        .article-card.coming-soon {
+            opacity: 0.78;
+            cursor: default;
+        }
+        .article-card.coming-soon:hover {
+            transform: none;
+            border-color: var(--rule-soft);
+        }
+        .article-card.coming-soon .read-more {
+            color: var(--ink-muted);
+        }
+        .article-card.coming-soon .badge-soon {
+            position: absolute;
+            top: var(--s-3);
+            right: var(--s-3);
+            font-family: var(--mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: var(--paper-soft);
+            color: var(--ink-muted);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Footer CTA — drives back to product */
+        .learn-cta {
+            background: var(--ink);
+            color: var(--paper);
+            padding: var(--s-9) 0;
+            text-align: center;
+        }
+        .learn-cta h2 {
+            font-family: var(--display);
+            font-size: clamp(36px, 5vw, 56px);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--paper);
+            margin-bottom: var(--s-4);
+        }
+        .learn-cta p {
+            color: var(--ink-on-dark-soft);
+            font-size: 18px;
+            margin-bottom: var(--s-6);
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .learn-cta .btn {
+            font-size: 16px;
+            padding: 16px 32px;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 720px) {
+            .learn-hero { padding: var(--s-7) 0 var(--s-6); }
+            .article-grid { grid-template-columns: 1fr; gap: var(--s-4); }
+            .category-nav { top: 56px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="index.html#numbers">Numbers</a>
+            <a href="index.html#tour">Product</a>
+            <a href="learn.html" class="active">Learn</a>
+            <a href="index.html#pricing">Pricing</a>
+            <a href="download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="learn-hero">
+    <div class="container container-narrow">
+        <span class="eyebrow">Learn</span>
+        <h1>Swing trading,<br>without the noise.</h1>
+        <p class="lede">
+            Free, honest articles for Indian swing traders. No motivational fluff. No "secret formulas." Just backtested strategies, risk math, and the practical things that actually move your equity curve.
+        </p>
+        <div class="meta-row">
+            <span><strong>5</strong> articles live &middot; <strong>20</strong> planned</span>
+            <span><strong>5</strong> categories</span>
+            <span>Updated every 2 weeks</span>
+            <span>Free forever</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============ CATEGORY NAV ============ -->
+<nav class="category-nav" aria-label="Categories">
+    <div class="category-nav-inner">
+        <a href="#foundations" class="category-pill">1. Foundations</a>
+        <a href="#strategies" class="category-pill">2. Strategy Deep Dives</a>
+        <a href="#risk" class="category-pill">3. Risk &amp; Money Management</a>
+        <a href="#indian-markets" class="category-pill">4. Indian Markets &amp; SEBI</a>
+        <a href="#custom-edges" class="category-pill">5. Building Your Own Edge</a>
+    </div>
+</nav>
+
+<!-- ============ CATEGORY 1: FOUNDATIONS ============ -->
+<section class="category-section" id="foundations">
+    <div class="container">
+        <div class="category-header">
+            <div>
+                <span class="category-number">Category 01</span>
+                <h2>Foundations</h2>
+            </div>
+            <p>Start here if you're new to swing trading. The basics that actually matter — what swing trading is, why it's different from intraday and investing, and the realistic expectations to set before you risk a rupee.</p>
+        </div>
+        <div class="article-grid">
+
+            <!-- ARTICLE: Live -->
+            <a href="learn/what-is-swing-trading.html" class="article-card">
+                <div class="meta">
+                    <span>Foundations</span>
+                    <span class="difficulty">Beginner &middot; 8 min read</span>
+                </div>
+                <h3>What is swing trading? An honest definition.</h3>
+                <p>The term "swing trading" gets used loosely. We define it precisely: positions held 2-30 days, technicals + price action, no overnight intraday risk. Why this matters for your strategy choices.</p>
+                <span class="read-more">Read article &rarr;</span>
+            </a>
+
+            <!-- Coming soon -->
+            <a href="learn/swing-vs-intraday-vs-investing.html" class="article-card">
+                <div class="meta">
+                    <span>Foundations</span>
+                    <span class="difficulty">Beginner &middot; 10 min read</span>
+                </div>
+                <h3>Swing vs intraday vs investing: which fits your life?</h3>
+                <p>A practical decision framework based on capital, time available, screen-time tolerance, and tax bracket. With concrete examples for a ₹1L, ₹5L, and ₹25L portfolio.</p>
+                <span class="read-more">Read article &rarr;</span>
+            </a>
+
+            <a href="learn/realistic-returns-swing-trading.html" class="article-card">
+                <div class="meta">
+                    <span>Foundations</span>
+                    <span class="difficulty">Beginner &middot; 12 min read</span>
+                </div>
+                <h3>The realistic returns table: what swing trading actually pays.</h3>
+                <p>Every guru promises 100% per year. The honest reference points: index returns, mutual fund returns, and the math behind why most retail traders lose.</p>
+                <span class="read-more">Read article &rarr;</span>
+            </a>
+
+            <a href="learn/reading-candlestick-charts-india.html" class="article-card">
+                <div class="meta">
+                    <span>Foundations</span>
+                    <span class="difficulty">Beginner &middot; 9 min read</span>
+                </div>
+                <h3>How to read a candlestick chart (Indian context).</h3>
+                <p>Beyond the textbook definitions. What candle patterns actually predict in NSE stocks, what they don't, and why most "candlestick courses" teach you noise.</p>
+                <span class="read-more">Read article &rarr;</span>
+            </a>
+
+            <a href="learn/stage-analysis-nse-stocks.html" class="article-card">
+                <div class="meta">
+                    <span>Foundations</span>
+                    <span class="difficulty">Intermediate &middot; 14 min read</span>
+                </div>
+                <h3>Stage analysis: the 4 phases every NSE stock cycles through.</h3>
+                <p>Weinstein's stage analysis adapted to Indian markets. How to identify Stage 2 uptrends (where you trade) versus Stages 1, 3, and 4 (where you don't).</p>
+                <span class="read-more">Read article &rarr;</span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============ CATEGORY 2: STRATEGY DEEP DIVES ============ -->
+<section class="category-section" id="strategies">
+    <div class="container">
+        <div class="category-header">
+            <div>
+                <span class="category-number">Category 02</span>
+                <h2>Strategy Deep Dives</h2>
+            </div>
+            <p>The strategies inside Tradosaurus, explained from first principles. Each article covers the logic, the entry/exit rules, the historical performance, and the conditions where the strategy fails. No hype.</p>
+        </div>
+        <div class="article-grid">
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Strategy</span>
+                    <span class="difficulty">Intermediate &middot; 18 min read</span>
+                </div>
+                <h3>Trend Pullback Breakout (TPB), explained.</h3>
+                <p>The TPB strategy from scratch: why pullbacks in trending stocks offer better entries than breakouts. 9-year backtest results across 2,425 trades, including the years it lost money.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Strategy</span>
+                    <span class="difficulty">Intermediate &middot; 16 min read</span>
+                </div>
+                <h3>Darvas Box Breakout: a 70-year-old idea that still works.</h3>
+                <p>Nicolas Darvas's box theory from his 1959 book, applied to modern NSE stocks. Why this simple concept survives, and where it breaks down in choppy markets.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Strategy</span>
+                    <span class="difficulty">Intermediate &middot; 15 min read</span>
+                </div>
+                <h3>Volatility Contraction Pattern (VCP): Minervini's classic, tested.</h3>
+                <p>Mark Minervini popularized VCP in US markets. Does it work on NSE? Backtested results, the modifications needed for Indian volatility, and the rare setups it catches.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Strategy</span>
+                    <span class="difficulty">Advanced &middot; 14 min read</span>
+                </div>
+                <h3>Williams %R mean reversion: when oversold actually means buy.</h3>
+                <p>Most "oversold" indicators fire false signals. Why Williams %R works specifically for swing reversals — and the filter conditions that separate signal from noise.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Strategy</span>
+                    <span class="difficulty">Advanced &middot; 17 min read</span>
+                </div>
+                <h3>Bollinger Band Squeeze: trading the calm before the storm.</h3>
+                <p>When volatility compresses, expansion follows. The squeeze setup explained, the indicator combinations that confirm it, and why this is one of the highest-probability patterns we've tested.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============ CATEGORY 3: RISK & MONEY MANAGEMENT ============ -->
+<section class="category-section" id="risk">
+    <div class="container">
+        <div class="category-header">
+            <div>
+                <span class="category-number">Category 03</span>
+                <h2>Risk &amp; Money Management</h2>
+            </div>
+            <p>The unglamorous topic that separates traders who survive from traders who don't. Position sizing, stop-loss discipline, drawdown psychology, and the math behind why even good strategies kill bad capital allocation.</p>
+        </div>
+        <div class="article-grid">
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Risk</span>
+                    <span class="difficulty">Beginner &middot; 11 min read</span>
+                </div>
+                <h3>Position sizing for ₹1 lakh, ₹5 lakh, and ₹25 lakh portfolios.</h3>
+                <p>The 1% rule explained, why it's actually 0.5% for most retail traders, and concrete examples of how to size positions across three realistic portfolio sizes.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Risk</span>
+                    <span class="difficulty">Intermediate &middot; 13 min read</span>
+                </div>
+                <h3>Why your stop loss is the most important number you set.</h3>
+                <p>Stop-loss placement is not arbitrary. The math of risk:reward ratios, why most retail traders set stops too tight, and how to use ATR-based stops correctly.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Risk</span>
+                    <span class="difficulty">Intermediate &middot; 16 min read</span>
+                </div>
+                <h3>Understanding maximum drawdown (and surviving 30%+).</h3>
+                <p>Even profitable strategies have brutal drawdown periods. What MDD means, why "I'd never sit through that" is naive, and the psychological prep needed for the inevitable losing streak.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Risk</span>
+                    <span class="difficulty">Advanced &middot; 19 min read</span>
+                </div>
+                <h3>Kelly Criterion for swing traders: useful or dangerous?</h3>
+                <p>The Kelly formula tells you the optimal bet size. Most retail applications get it wrong. When fractional Kelly works, when full Kelly destroys accounts, and what to actually use.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============ CATEGORY 4: INDIAN MARKETS & SEBI ============ -->
+<section class="category-section" id="indian-markets">
+    <div class="container">
+        <div class="category-header">
+            <div>
+                <span class="category-number">Category 04</span>
+                <h2>Indian Markets &amp; SEBI</h2>
+            </div>
+            <p>The stuff that's specific to NSE and Indian regulations — and that almost no global trading content covers. STT, LTCG vs STCG, T+1 settlement, circuit limits, F&amp;O margins. Practical implications for the swing trader.</p>
+        </div>
+        <div class="article-grid">
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Indian Markets</span>
+                    <span class="difficulty">Beginner &middot; 12 min read</span>
+                </div>
+                <h3>STCG vs LTCG: how taxes shape your swing trading returns.</h3>
+                <p>Short-term capital gains at 15% versus long-term at 10%. Why holding for 13 months instead of 11 changes your strategy math, and when to take the tax hit versus when to wait.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Indian Markets</span>
+                    <span class="difficulty">Intermediate &middot; 14 min read</span>
+                </div>
+                <h3>NSE microstructure: circuits, T+1 settlement, and what they mean for swings.</h3>
+                <p>Why a 5% upper circuit can be either great news or a trap. T+1 settlement and the implications for cash management. Plus the "after-market session" most retail traders ignore.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Indian Markets</span>
+                    <span class="difficulty">Intermediate &middot; 11 min read</span>
+                </div>
+                <h3>SEBI rules every trader should know (but most don't).</h3>
+                <p>The rules around algorithmic trading, "advisory" speech online, what counts as research vs recommendation, and how to discuss your trades publicly without inviting regulatory trouble.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============ CATEGORY 5: BUILDING YOUR OWN EDGE ============ -->
+<section class="category-section" id="custom-edges">
+    <div class="container">
+        <div class="category-header">
+            <div>
+                <span class="category-number">Category 05</span>
+                <h2>Building Your Own Edge</h2>
+            </div>
+            <p>For traders who want to go beyond pre-built strategies. Using the Custom Strategy Builder, designing original systems, walk-forward testing, and avoiding the curve-fitting trap that destroys most DIY systems.</p>
+        </div>
+        <div class="article-grid">
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Custom Edges</span>
+                    <span class="difficulty">Intermediate &middot; 15 min read</span>
+                </div>
+                <h3>Your first custom strategy: a step-by-step walkthrough.</h3>
+                <p>Build a complete swing strategy from scratch in the Custom Strategy Builder. Define rules, backtest, refine. By the end you'll have a working system you understand top to bottom.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Custom Edges</span>
+                    <span class="difficulty">Advanced &middot; 17 min read</span>
+                </div>
+                <h3>Walk-forward testing: how to know if your strategy is real.</h3>
+                <p>Curve-fitting is the silent killer of DIY strategies. Walk-forward testing — splitting in-sample and out-of-sample data — is the antidote. How to do it correctly.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+            <div class="article-card coming-soon">
+                <span class="badge-soon">Coming soon</span>
+                <div class="meta">
+                    <span>Custom Edges</span>
+                    <span class="difficulty">Advanced &middot; 18 min read</span>
+                </div>
+                <h3>40+ indicators: which ones actually add edge (and which are noise).</h3>
+                <p>RSI, MACD, ATR, Stochastic, ADX, Bollinger Bands, Keltner Channels — we tested every indicator in Tradosaurus across 9 years of NSE data. The results may surprise you.</p>
+                <span class="read-more">Coming soon</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="learn-cta">
+    <div class="container container-narrow">
+        <h2>Ready to put theory into practice?</h2>
+        <p>Tradosaurus comes with the strategies and the backtester. The articles teach you why; the tool lets you do.</p>
+        <a href="download.html" class="btn btn-primary" style="background: var(--paper); color: var(--ink);">
+            Download Tradosaurus &rarr;
+        </a>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="index.html#numbers">The numbers</a></li>
+                <li><a href="index.html#tour">Product tour</a></li>
+                <li><a href="index.html#pricing">Pricing</a></li>
+                <li><a href="download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="learn.html#foundations">Foundations</a></li>
+                <li><a href="learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="learn.html#risk">Risk management</a></li>
+                <li><a href="learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="disclaimer.html">Disclaimer</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="refund.html">Refund policy</a></li>
+                <li><a href="terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+
+// Highlight active category pill based on scroll position
+const sections = document.querySelectorAll('.category-section');
+const pills = document.querySelectorAll('.category-pill');
+const updateActive = () => {
+    const scrollY = window.scrollY + 200;
+    let active = null;
+    sections.forEach(sec => {
+        if (sec.offsetTop <= scrollY) active = sec.id;
+    });
+    pills.forEach(p => {
+        p.classList.toggle('active',
+            p.getAttribute('href') === '#' + active);
+    });
+};
+window.addEventListener('scroll', updateActive, { passive: true });
+updateActive();
+</script>
+
+</body>
+</html>

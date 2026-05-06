@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage analysis: the 4 phases every NSE stock cycles through. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="Stan Weinstein's 1988 stage analysis framework adapted for NSE stocks. The four phases, how to identify each, and why you should only trade aggressively in Stage 2.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#foundations">Foundations</a>
+        </div>
+        <h1>Stage analysis: the 4 phases every NSE stock cycles through.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Intermediate</span>
+            <span>14 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>If you only learn one technical analysis framework in your entire trading career, learn this one. Stage analysis &mdash; introduced by Stan Weinstein in his 1988 book <em>Secrets for Profiting in Bull and Bear Markets</em> &mdash; is the most useful organizing concept in technical trading. It tells you when to be aggressive, when to wait, when to be defensive, and when to be flat. Master it, and you'll outperform 90% of retail traders who don't bother.</p>
+
+        <p>The core insight is simple: every stock cycles through four phases, and you should only trade aggressively in one of them. Most retail losses come from trying to trade stocks that are in the wrong stage.</p>
+
+        <h2>The four stages</h2>
+
+        <p>A stock's life on a long-term chart isn't random. Over months and years, it cycles through these four phases, in this order:</p>
+
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>Stage</th>
+                    <th>Name</th>
+                    <th>What it looks like</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Stage 1</td>
+                    <td>Basing / Accumulation</td>
+                    <td>Sideways, low volatility, after a downtrend</td>
+                </tr>
+                <tr>
+                    <td>Stage 2</td>
+                    <td>Advancing / Uptrend</td>
+                    <td>Higher highs and higher lows, rising 30-week MA</td>
+                </tr>
+                <tr>
+                    <td>Stage 3</td>
+                    <td>Topping / Distribution</td>
+                    <td>Sideways volatile, after a long uptrend</td>
+                </tr>
+                <tr>
+                    <td>Stage 4</td>
+                    <td>Declining / Downtrend</td>
+                    <td>Lower highs and lower lows, falling 30-week MA</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Most stocks spend most of their time in Stages 1 and 3 &mdash; the boring, sideways phases where price chops around without going anywhere meaningful. The exciting moves up happen in Stage 2; the painful moves down happen in Stage 4.</p>
+
+        <p class="pull-quote">
+            Most retail traders lose money because they're trying to trade Stage 1 and Stage 3 stocks &mdash; precisely the stocks where directional bets are coin flips.
+        </p>
+
+        <h2>Stage 1: The base</h2>
+
+        <p>After a stock has been in a downtrend for many months, selling exhausts itself. Volatility contracts. The stock starts trading sideways in a range. The 30-week moving average (which had been declining sharply) flattens out. Volume, which was high during the panic of the downtrend, contracts to background levels.</p>
+
+        <p>This is Stage 1 &mdash; the basing phase. It's where smart money quietly accumulates while retail traders, traumatized by the previous decline, want nothing to do with the stock.</p>
+
+        <p>How long does Stage 1 last? Anywhere from a few months to a few years. There's no fixed duration. The base is "complete" when the stock breaks above the upper boundary of its range with conviction (volume) and the 30-week moving average starts curling up.</p>
+
+        <p><strong>What to do in Stage 1:</strong> nothing. Or at most, watch the stock for a future Stage 2 entry. Don't buy "because it's cheap" &mdash; cheap in Stage 1 can stay cheap for two more years. Don't short either &mdash; the downtrend is over.</p>
+
+        <h2>Stage 2: The advance</h2>
+
+        <p>Stage 2 begins when the stock breaks above its Stage 1 base, with the 30-week moving average rising and pointing up. This is the stage where money is made. Successful trends in Stage 2 can run for 6 months to 3 years, sometimes longer.</p>
+
+        <p>The defining features of Stage 2:</p>
+
+        <ul>
+            <li>Higher highs and higher lows on the weekly chart</li>
+            <li>30-week moving average is rising and price is above it</li>
+            <li>Volume confirms the moves &mdash; up-weeks have above-average volume; down-weeks have below-average volume</li>
+            <li>Pullbacks find buyers at the rising 30-week MA, or at a faster-moving 10-week MA</li>
+        </ul>
+
+        <p><strong>What to do in Stage 2:</strong> this is where you take aggressive long positions. Every swing trading strategy worth knowing &mdash; pullbacks, breakouts, momentum, volatility contraction patterns &mdash; works best on Stage 2 stocks. The trend is your friend, and the math of buying weakness in a strong trend is heavily skewed in your favor.</p>
+
+        <p>The honest framing: <strong>Stage 2 stocks are where 80% of swing trading profits are made.</strong> If you can identify Stage 2 stocks reliably, you've solved the hardest part of trading.</p>
+
+        <h2>Stage 3: The top</h2>
+
+        <p>Eventually every uptrend ends. The stock starts making roughly equal highs and lows, the 30-week MA flattens, volatility increases, and individual moves get sharper but go nowhere on net. This is Stage 3 &mdash; the topping phase.</p>
+
+        <p>Stage 3 looks confusingly like Stage 1 from a distance &mdash; both are sideways. The difference is what came before. Stage 1 follows a long downtrend; Stage 3 follows a long uptrend. The trapped participants are different. In Stage 1, retail is bearish and resigned. In Stage 3, retail is bullish and convinced this dip is just another buying opportunity.</p>
+
+        <p>Stage 3 can last months. Some stocks do break out from Stage 3 back into Stage 2. Most don't &mdash; they break down into Stage 4.</p>
+
+        <p><strong>What to do in Stage 3:</strong> get out of long positions if you held them through Stage 2. Don't add new long positions. Don't short yet either &mdash; Stage 3 chops will stop you out repeatedly before any real downtrend begins.</p>
+
+        <p>Most retail traders lose meaningful money in Stage 3 specifically. They keep buying dips that worked in Stage 2 but are now the early signals of a top. The pattern that paid them for two years suddenly stops working, and they don't realize the stage has changed until they've given back months of gains.</p>
+
+        <h2>Stage 4: The decline</h2>
+
+        <p>Stage 4 begins when the stock breaks below the lower boundary of its Stage 3 range, with the 30-week MA now declining. Successful Stage 4 declines can run for 6 months to 2 years.</p>
+
+        <p>Defining features:</p>
+
+        <ul>
+            <li>Lower highs and lower lows on the weekly chart</li>
+            <li>30-week moving average declining; price below it</li>
+            <li>Rallies fail at the falling 30-week MA</li>
+            <li>Volume confirms &mdash; down-weeks have above-average volume; up-weeks have below-average volume</li>
+        </ul>
+
+        <p><strong>What to do in Stage 4:</strong> for retail traders in Indian markets, the honest answer is: avoid. Long-only swing traders should stay in cash or rotate into Stage 2 stocks in different sectors. Shorting individual stocks in Indian cash markets is operationally hard for retail (no securities lending; F&amp;O has its own complications).</p>
+
+        <p>The single biggest mistake here is "value buying" Stage 4 stocks. The stock fell 30%; it must be cheap now. Then it falls another 40%, then another 30%. The moving average is declining for a reason &mdash; the market is repricing the stock's fundamentals, and you don't know what the floor is.</p>
+
+        <h2>How to identify the stage you're in</h2>
+
+        <p>The mechanical version is simple. On a weekly chart with a 30-week (about 150-day) simple moving average:</p>
+
+        <ol>
+            <li>Is price above or below the 30-week MA?</li>
+            <li>Is the 30-week MA sloping up, sloping down, or roughly flat?</li>
+            <li>What was the previous trend that led to this state?</li>
+        </ol>
+
+        <p>From those three questions:</p>
+
+        <ul>
+            <li>Price above flat MA, after a downtrend &rarr; <strong>Stage 1</strong></li>
+            <li>Price above rising MA, after a base &rarr; <strong>Stage 2</strong></li>
+            <li>Price near flat MA, after a long uptrend &rarr; <strong>Stage 3</strong></li>
+            <li>Price below falling MA &rarr; <strong>Stage 4</strong></li>
+        </ul>
+
+        <p>The 30-week MA on weekly charts is the standard from Weinstein's original work. Some practitioners prefer 40-week (roughly 200-day) on daily charts &mdash; they capture similar information at slightly different sensitivities. Either works.</p>
+
+        <h2>Why the framework holds up</h2>
+
+        <p>Stage analysis was published in 1988. Markets have changed enormously since then &mdash; the rise of algorithmic trading, the dominance of passive flows, the explosion of derivatives. And yet the framework still works because it captures something fundamental about how participants behave.</p>
+
+        <p>Stocks don't transition between stages randomly. They transition because of changes in the supply/demand balance among the participants holding them. A long downtrend exhausts sellers. A base accumulates buyers. The breakout marks the shift in dominance. The same logic operates in reverse at the top. As long as markets involve humans (and even humans-coding-algos), this dynamic persists.</p>
+
+        <h2>The Indian-market application</h2>
+
+        <p>Stage analysis works on Nifty stocks, midcaps, and even smallcaps with sufficient liquidity. A few practical notes for Indian markets:</p>
+
+        <ul>
+            <li><strong>Stick to liquid names.</strong> The framework relies on technical signals like moving averages and breakouts being meaningful. In illiquid stocks (under a few crores in daily turnover), the signals are noisy and unreliable.</li>
+            <li><strong>Watch the broader market.</strong> Even Stage 2 stocks struggle to advance during overall market downtrends. Use the Nifty 50 itself as a stage filter &mdash; when Nifty is in Stage 4, individual Stage 2 setups have a higher failure rate.</li>
+            <li><strong>Sector context matters.</strong> Sometimes one sector is in Stage 2 while another is in Stage 4. This is a normal feature of Indian markets, where different sectors lead and lag at different times. Be deliberately diversified across sectors when picking Stage 2 candidates.</li>
+            <li><strong>Earnings can fast-forward stages.</strong> A negative earnings surprise can collapse a Stage 2 stock into Stage 4 in a single week. The framework is robust to gradual stage changes; it's vulnerable to sudden ones. Don't bet your whole portfolio on a Stage 2 stock right before its earnings release.</li>
+        </ul>
+
+        <h2>What this means for you</h2>
+
+        <p>If you implement only one rule from everything in this Foundations series, make it this: <strong>only take long swing trades in stocks that are in confirmed Stage 2.</strong> Filter every signal you generate through the stage check. If the stock isn't above a rising 30-week MA, skip the trade.</p>
+
+        <p>This single filter eliminates the bulk of bad trades retail traders make. It's why most successful trend-following strategies have an implicit or explicit "trade only in uptrends" rule baked in. They're filtering for Stage 2.</p>
+
+        <p>You don't need fancy strategies to make money in markets. You need to consistently buy strength in Stage 2 stocks and stay out of everything else. Done patiently over years, that's all the edge most retail traders ever need.</p>
+
+        <p>This concludes the Foundations series. In the next category &mdash; Strategy Deep Dives &mdash; we get specific about <em>how</em> to enter Stage 2 stocks: the exact patterns, rules, and historical performance of strategies like Trend Pullback Breakout, Darvas Box, and the Volatility Contraction Pattern.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to put this into practice with real backtests?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

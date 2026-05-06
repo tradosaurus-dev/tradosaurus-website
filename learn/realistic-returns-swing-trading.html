@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The realistic returns table: what swing trading actually pays. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="Honest CAGR and drawdown ranges for swing trading. Why "10% per month" claims are statistically impossible, and what disciplined traders actually achieve over multi-year horizons.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#foundations">Foundations</a>
+        </div>
+        <h1>The realistic returns table: what swing trading actually pays.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Beginner</span>
+            <span>12 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>Open Twitter on any given trading day in India and you will see screenshots: a trader claiming 60% returns this year, another claiming they doubled their capital in three months, a coach selling a course promising 8 to 10% per month. The implication is always the same: if you're not making these numbers, you're doing it wrong.</p>
+
+        <p>The opposite is true. The traders posting those screenshots are either lucky, lying, or selling something. This article is about what swing trading actually pays &mdash; the realistic numbers a disciplined trader can expect, the math behind why the viral claims are statistically impossible, and the honest framework for setting your own expectations.</p>
+
+        <h2>The math that destroys most "guru" claims</h2>
+
+        <p>Before we get to realistic numbers, understand why most public claims are mathematically suspect.</p>
+
+        <p>Suppose someone claims they make <strong>10% per month, consistently.</strong> Compounded, that's a 213% annual return. Sustained over 5 years, &#8377;1 lakh becomes &#8377;3.04 crore. Sustained over 10 years, &#8377;1 lakh becomes &#8377;923 crore.</p>
+
+        <p>If anyone in India was actually compounding 10% per month for 10 years, they'd be on the Forbes list. There would be one such person, and we'd all know their name. The fact that thousands of "10% per month" coaches exist is itself proof that the claim isn't real.</p>
+
+        <p class="pull-quote">
+            If a strategy genuinely produced 10% per month consistently, the person running it would not be selling you a course. They would be running a hedge fund.
+        </p>
+
+        <p>The same math kills "doubled my capital in 3 months" stories. That's a 26% monthly return. At that rate, &#8377;1 lakh becomes &#8377;100 crore in under 5 years. Either the person had one lucky quarter (likely) or they're lying about the timeframe (also likely).</p>
+
+        <h2>What the data actually shows</h2>
+
+        <p>Let's anchor on real reference points.</p>
+
+        <h3>Reference point 1: The Nifty 50 itself</h3>
+
+        <p>The Nifty 50 has compounded at roughly <strong>12 to 14% per year</strong> over multi-decade periods, depending on the start and end dates. Add dividend yield (around 1.2% currently) and you're at 13 to 15% total return. This is the benchmark every active trader is implicitly trying to beat. If you're not beating Nifty after costs and taxes, you should arguably just buy a Nifty index fund.</p>
+
+        <h3>Reference point 2: Mutual funds</h3>
+
+        <p>Top-performing actively managed Indian equity mutual funds &mdash; the ones run by professionals at Franklin, ICICI, HDFC, Axis &mdash; deliver 14 to 18% CAGR over 10-year periods. <strong>This is what professional, full-time fund managers, with research teams and institutional infrastructure, achieve.</strong> Beating them as a part-time retail trader is hard. Possible, but hard.</p>
+
+        <h3>Reference point 3: SEBI's own studies on retail traders</h3>
+
+        <p>SEBI has published multiple studies on retail F&amp;O traders showing that the vast majority lose money over 3+ year horizons. The numbers vary by year and by segment, but the headline finding is consistent: <strong>retail active trading is a losing proposition for most participants</strong>, primarily due to costs, taxes, and behavioral mistakes.</p>
+
+        <p>Note: SEBI's studies focus on F&amp;O specifically, not swing trading on cash equities. But the lessons transfer. Active trading in any form has high failure rates.</p>
+
+        <h2>The realistic returns table for swing trading</h2>
+
+        <p>Given the above, here's what swing trading can realistically pay, by skill level. These ranges reflect what disciplined traders achieve over multi-year horizons after accounting for costs and slippage. Single-year returns can be much higher (or much lower) than these ranges &mdash; what matters is the multi-year average.</p>
+
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>Trader profile</th>
+                    <th>Realistic CAGR</th>
+                    <th>Typical max drawdown</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Beginner (year 1-2)</td>
+                    <td>Negative to flat</td>
+                    <td>30 to 50%+</td>
+                </tr>
+                <tr>
+                    <td>Intermediate (year 2-4)</td>
+                    <td>5 to 12%</td>
+                    <td>25 to 40%</td>
+                </tr>
+                <tr>
+                    <td>Disciplined (year 4+)</td>
+                    <td>12 to 20%</td>
+                    <td>20 to 35%</td>
+                </tr>
+                <tr>
+                    <td>Top tier (rare)</td>
+                    <td>20 to 30%</td>
+                    <td>15 to 30%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Two things to notice about this table.</p>
+
+        <p>First, <strong>beginners typically don't make money.</strong> They lose money for the first year or two as they learn. This is universal &mdash; it applies to swing trading, options, intraday, every active discipline. If you start with the expectation of immediate profits, you'll quit during the first drawdown and miss the part where you actually start making money.</p>
+
+        <p>Second, <strong>even the best swing traders rarely beat the top mutual funds by huge margins</strong>, after accounting for the time invested. A 20% CAGR is excellent, but Nifty index gives you 13-14% with zero time spent. The "edge" of swing trading needs to be evaluated against the opportunity cost of just buying an index fund.</p>
+
+        <h2>Why backtest numbers and live numbers differ</h2>
+
+        <p>Tools like Tradosaurus show backtest results going back many years. Those results are real, but they're the upper bound of what live trading might produce, not a guarantee. Three reasons:</p>
+
+        <ol>
+            <li><strong>Slippage.</strong> A backtest fills you at the exact entry price. Live trading fills you a few paise to a few rupees worse, every time. Over hundreds of trades, this compounds.</li>
+            <li><strong>Behavioral drift.</strong> A backtest takes every signal mechanically. A human trader skips signals that "feel risky," holds losers past stops, takes profits early on winners. These drifts cost more than the strategy's edge in many cases.</li>
+            <li><strong>Market regime change.</strong> A strategy that worked beautifully from 2015 to 2024 may underperform from 2025 to 2030 if market structure changes. Backtests tell you about the past, not the future.</li>
+        </ol>
+
+        <p>A reasonable rule of thumb: <strong>expect live returns to be 30 to 50% lower than backtest returns</strong>, especially in the first 2 years of trading a system. If a backtest shows 18% CAGR, plan for 10 to 13% live. If you exceed that, you'll be pleasantly surprised.</p>
+
+        <h2>The drawdown reality</h2>
+
+        <p>The number that matters more than CAGR is <strong>maximum drawdown</strong> &mdash; the largest peak-to-trough decline your equity curve has experienced. Almost every disciplined swing trading approach has multi-month drawdowns of 20 to 35% at some point. Some have 40%+ drawdowns during exceptional events (March 2020 Covid crash, 2008 financial crisis).</p>
+
+        <div class="callout">
+            <strong>The drawdown test</strong>
+            Before trading any strategy with real money, ask yourself: "Could I emotionally sit through a 35% drawdown without panicking, abandoning the strategy, or doing something stupid?" If the honest answer is no, the strategy is wrong for you &mdash; not because the math is wrong, but because you'll bail at the worst possible moment and lock in losses that the system would have recovered from.
+        </div>
+
+        <p>This is why the "realistic returns" question can't be answered without also answering "realistic drawdown." A 25% CAGR system with 50% drawdowns is, for most retail traders, worse than a 12% CAGR system with 18% drawdowns &mdash; because the first one will cause behavioral exits that destroy the math.</p>
+
+        <h2>Setting your own expectations</h2>
+
+        <p>For someone starting swing trading today, with realistic capital, no prior edge, and a full-time job, here's the honest expectation:</p>
+
+        <ul>
+            <li><strong>Year 1:</strong> Expect to lose 5-15% while you learn. Treat it as paid education. The goal is to develop discipline and learn to follow a system, not to make money.</li>
+            <li><strong>Year 2:</strong> Break even or slightly positive. You're now executing a tested system. Discipline is the bottleneck, not strategy.</li>
+            <li><strong>Year 3 and beyond:</strong> If you've stuck with it and avoided behavioral mistakes, 8 to 15% CAGR is achievable. Above that becomes increasingly difficult.</li>
+        </ul>
+
+        <p>If those numbers feel underwhelming, compare them to the alternatives. Fixed deposits pay 6 to 7%. Equity mutual funds long-term: 12 to 14%. Outperforming a passive index by even 3 to 5 percentage points per year is a meaningful achievement &mdash; one most professional fund managers don't accomplish consistently.</p>
+
+        <h2>What this means for you</h2>
+
+        <p>The point of this article isn't to discourage. It's to set expectations that survive contact with reality. <strong>The traders who quit are usually the ones who started with unrealistic expectations.</strong> They expected 20% per month, made 1.5%, called it failure, and quit before the system had time to compound.</p>
+
+        <p>The traders who succeed long-term started with modest expectations, accepted slow progress, sat through drawdowns without panicking, and let compounding do its quiet work. That's not a sexy story. It is, however, the story of every retail trader who actually built wealth from this.</p>
+
+        <p>The next article gets practical: how to read price action correctly, separating the signal patterns that work from the noise patterns that don't.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to put this into practice with real backtests?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

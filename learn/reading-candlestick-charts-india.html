@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to read a candlestick chart (Indian context). &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="An honest guide to candlestick analysis for Indian markets. Why most patterns are noise, the few that have real edge, and what to look at instead.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#foundations">Foundations</a>
+        </div>
+        <h1>How to read a candlestick chart (Indian context).</h1>
+        <div class="article-meta">
+            <span class="difficulty">Beginner</span>
+            <span>9 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>Walk into any retail trading course in India and the first thing they teach is candlestick patterns. Doji. Hammer. Engulfing. Morning star. Evening star. Three black crows. By the end of the weekend you've memorized 30 patterns and feel like you've learned how markets work.</p>
+
+        <p>You haven't. Most candlestick patterns are noise &mdash; coincidental shapes that occur randomly in any sufficiently long price series. A handful of patterns have small but real predictive power, but only in specific contexts. This article tells you which is which.</p>
+
+        <h2>What a candle actually represents</h2>
+
+        <p>Before patterns, the basics. A single candle on a daily chart shows you four numbers from one trading day:</p>
+
+        <ul>
+            <li><strong>Open:</strong> the first traded price of the day (in Indian markets, the opening auction at 9:15 AM)</li>
+            <li><strong>High:</strong> the highest price during the day</li>
+            <li><strong>Low:</strong> the lowest price during the day</li>
+            <li><strong>Close:</strong> the last traded price (3:30 PM closing auction)</li>
+        </ul>
+
+        <p>The body of the candle (the thick part) connects open and close. The wicks (the thin lines) extend to high and low. By convention, a green/white candle means close was above open (price went up); a red/black candle means close was below open.</p>
+
+        <p>That's it. That's all a candle is. Anything beyond this &mdash; the names, the patterns, the "psychology" &mdash; is interpretation that humans have layered on top.</p>
+
+        <h2>Why most candlestick patterns don't work</h2>
+
+        <p>Three reasons.</p>
+
+        <h3>Reason 1: Random patterns occur randomly</h3>
+
+        <p>Take 10 years of daily Nifty data. Search for "bullish engulfing" patterns &mdash; a small red candle followed by a larger green candle that fully covers the previous candle's body. You'll find hundreds of them. About half are followed by upward moves. About half are followed by downward moves. This is what randomness looks like &mdash; the pattern itself has no predictive value.</p>
+
+        <p>The same holds for most named patterns: doji, hammer, hanging man, three white soldiers, three black crows, abandoned baby, dark cloud cover, piercing line. Studies that have rigorously tested these patterns find their forecast accuracy is at or barely above 50% &mdash; meaning a coin flip would do almost as well.</p>
+
+        <h3>Reason 2: Pattern recognition is biased toward the wins</h3>
+
+        <p>Trading educators teach patterns by showing you 20 examples where the pattern preceded a big move. They don't show you the 200 examples where the same pattern occurred and nothing happened, or the move went the other way. Your brain treats this curated highlight reel as "evidence" that the pattern works.</p>
+
+        <p class="pull-quote">
+            A pattern only "works" if you can show it works on average across all instances &mdash; not just on the cherry-picked instances featured in courses.
+        </p>
+
+        <h3>Reason 3: Single-candle patterns lack context</h3>
+
+        <p>A "hammer" candle (small body, long lower wick) is supposed to signal reversal. But the same shape means very different things in different contexts. A hammer at the end of a long downtrend in a strong stock might be a real reversal. A hammer in the middle of a sideways range is just a normal trading day. The pattern's name implies a meaning the candle alone doesn't have.</p>
+
+        <h2>The few patterns that do have edge</h2>
+
+        <p>Despite all the above, three pattern concepts have shown small but real predictive power across many studies. None of them are reliable enough to trade on their own &mdash; they need confirmation from trend, volume, and structure. But they're worth knowing.</p>
+
+        <h3>Pattern 1: Strong-trend pullback candles</h3>
+
+        <p>In a confirmed uptrend (stock making higher highs and higher lows above a rising 50-day moving average), a small red candle that pulls back to a moving average and then reverses higher with a green candle is a meaningful setup. Not because of the candles themselves, but because of what they represent: a brief retreat that found buyers at a known level.</p>
+
+        <p>This is the basis of trend-pullback strategies (we'll cover one called TPB in the Strategy Deep Dives section). The candles are the visible signal; the underlying mechanic is "buyers showed up at the moving average."</p>
+
+        <h3>Pattern 2: Wide-range breakout candles on volume</h3>
+
+        <p>A candle whose range (high minus low) is significantly larger than the recent average, accompanied by volume meaningfully above the recent average, often signals a real shift in supply/demand. The single-candle pattern (sometimes called "wide-range bar" or "expansion candle") matters less than the combination: large range AND high volume AND breaking out of a prior consolidation.</p>
+
+        <p>The honest version of this pattern: <strong>volume confirms the candle</strong>. A wide-range breakout on average volume is suspect. The same breakout on 2-3x average volume has real predictive power.</p>
+
+        <h3>Pattern 3: Failed breakdown / failed breakout</h3>
+
+        <p>A stock breaks below a clear support level, trades there for a day or two, then sharply reverses higher and closes back above the support. This "failed breakdown" pattern has shown small but persistent edge in many studies, including academic ones.</p>
+
+        <p>The mechanic: weak hands sold out at the breakdown; the price's quick recovery means smart money was waiting to buy at that level. The "failure" reveals more information about supply/demand than a clean breakdown would have.</p>
+
+        <p>The reverse pattern &mdash; failed breakouts &mdash; carries similar weight in the bearish direction.</p>
+
+        <h2>What to look at instead of candles</h2>
+
+        <p>Most experienced traders eventually realize that single-candle patterns are the wrong unit of analysis. The things that actually predict next-day price movement are larger structural features:</p>
+
+        <ul>
+            <li><strong>The trend.</strong> Is the stock making higher highs and higher lows on the weekly chart? Or lower highs and lower lows? This single feature has more predictive power than any candlestick pattern.</li>
+            <li><strong>Support and resistance levels.</strong> Where has the stock historically reversed? These levels matter because many other traders are watching them too.</li>
+            <li><strong>Volume context.</strong> Is today's volume higher or lower than average? Above-average volume on up-days suggests real buying. Above-average volume on down-days suggests real selling.</li>
+            <li><strong>Distance from key moving averages.</strong> Stocks tend to revert toward their 50-day and 200-day moving averages over time. Stocks far above these averages tend to consolidate or pull back; stocks far below tend to bounce or accelerate down.</li>
+            <li><strong>Volatility context.</strong> Is the stock in a tight range or a wide range? Tight ranges often precede expansion in either direction.</li>
+        </ul>
+
+        <p>Notice these are all <em>multi-candle</em> features. They take into account the broader picture, not just yesterday's candle.</p>
+
+        <h2>An Indian-context note</h2>
+
+        <p>Indian markets have some structural quirks that affect candle patterns specifically:</p>
+
+        <ul>
+            <li><strong>Circuit limits.</strong> A stock that hits a 5% upper or lower circuit produces a "frozen" candle &mdash; high = low for that day. This isn't a pattern; it's a regulatory constraint. Don't read meaning into it beyond "there was disproportionate demand or supply that day."</li>
+            <li><strong>Pre-open auction.</strong> The 9:00 AM to 9:15 AM pre-open session can produce gaps that affect the open of the candle. This is normal for Indian markets and isn't comparable to gaps in US markets.</li>
+            <li><strong>Low-liquidity smallcaps.</strong> In stocks with low daily volume (under a few crore), candle patterns become less reliable because individual large trades can dominate the candle's shape.</li>
+        </ul>
+
+        <h2>What this means for you</h2>
+
+        <p>If you're new to charting, here's an honest path:</p>
+
+        <ol>
+            <li>Don't memorize 30 candlestick patterns. The marginal return on this is low.</li>
+            <li>Instead, learn to identify trend structure (higher highs / higher lows vs the opposite). This single skill matters more than every pattern combined.</li>
+            <li>Layer in volume awareness &mdash; learn to compare today's volume to a 20-day or 50-day average.</li>
+            <li>Understand support and resistance as zones, not exact prices. Stocks rarely reverse at one specific number; they reverse in zones of 1-3% width.</li>
+            <li>Once those basics are solid, the small handful of patterns that do work (pullback reversals, expansion bars on volume, failed breakouts) become useful additions &mdash; not as standalone signals, but as confirmations of what you've already identified from structure.</li>
+        </ol>
+
+        <p>The next article in this series gets into the most powerful structural framework in technical analysis: stage analysis. The idea, originally from Stan Weinstein in 1988, is that every stock cycles through four predictable phases &mdash; and you should only trade in one of them.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to put this into practice with real backtests?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

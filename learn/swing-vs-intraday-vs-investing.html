@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swing vs intraday vs investing: which fits your life? &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="A practical decision framework for choosing between swing trading, intraday trading, and long-term investing. Based on capital, time, screen tolerance, and tax bracket.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        /* ============ ARTICLE STYLES ============ */
+        /* Identical to article-template.html — keeps all articles visually consistent */
+        .article-hero {
+            padding: var(--s-9) 0 var(--s-6);
+            background: var(--paper);
+            border-bottom: 1px solid var(--rule-soft);
+        }
+        .article-breadcrumb {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: var(--s-4);
+        }
+        .article-breadcrumb a {
+            color: var(--ink-muted);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule-soft);
+        }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 {
+            font-family: var(--display);
+            font-size: clamp(40px, 6vw, 72px);
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: var(--ink);
+            margin: 0 0 var(--s-5);
+            max-width: 880px;
+        }
+        .article-hero .article-meta {
+            display: flex;
+            gap: var(--s-5);
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-top: 1px solid var(--rule-soft);
+            padding-top: var(--s-4);
+        }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+
+        .article-body {
+            padding: var(--s-7) 0 var(--s-9);
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--ink-soft);
+        }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 {
+            font-family: var(--display);
+            font-size: clamp(28px, 3.5vw, 36px);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            margin: var(--s-7) 0 var(--s-4);
+        }
+        .article-body h3 {
+            font-family: var(--display);
+            font-size: 22px;
+            line-height: 1.3;
+            color: var(--ink);
+            margin: var(--s-6) 0 var(--s-3);
+        }
+        .article-body strong { color: var(--ink); }
+        .article-body a {
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            text-decoration: none;
+        }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol {
+            margin: 0 0 var(--s-4) 0;
+            padding-left: var(--s-5);
+        }
+        .article-body li { margin-bottom: var(--s-2); }
+
+        .pull-quote {
+            border-left: 4px solid var(--accent);
+            padding: var(--s-3) 0 var(--s-3) var(--s-5);
+            margin: var(--s-5) 0;
+            font-family: var(--display);
+            font-size: 24px;
+            line-height: 1.3;
+            color: var(--ink);
+            font-style: italic;
+        }
+
+        .callout {
+            background: var(--paper-bright);
+            border: 1px solid var(--rule-soft);
+            border-radius: 8px;
+            padding: var(--s-4) var(--s-5);
+            margin: var(--s-5) 0;
+            font-size: 16px;
+        }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+        /* Comparison table — for the three-column compare */
+        .compare-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: var(--s-5) 0;
+            font-size: 15px;
+            font-family: var(--mono);
+        }
+        .compare-table th, .compare-table td {
+            border-bottom: 1px solid var(--rule-soft);
+            padding: var(--s-3) var(--s-3);
+            text-align: left;
+            vertical-align: top;
+        }
+        .compare-table th {
+            font-family: var(--display);
+            font-size: 17px;
+            color: var(--ink);
+            border-bottom: 2px solid var(--ink);
+            font-weight: 500;
+        }
+        .compare-table td:first-child {
+            font-family: var(--mono);
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+            padding-right: var(--s-5);
+        }
+
+        .article-footer {
+            padding: var(--s-7) 0;
+            border-top: 1px solid var(--rule-soft);
+            text-align: center;
+        }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#foundations">Foundations</a>
+        </div>
+        <h1>Swing vs intraday vs investing: which fits your life?</h1>
+        <div class="article-meta">
+            <span class="difficulty">Beginner</span>
+            <span>10 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>The retail-trading internet treats this question as a moral one: "intraday is gambling," "investing is for boomers," "swing trading is the smart middle path." None of that is true. They're three different disciplines, suited to three different kinds of people. Choose wrong, and you'll hate the activity even if you make money. Choose right, and you'll stick with it long enough to compound.</p>
+
+        <p>This article is a decision framework. By the end, you should know which of the three actually fits your capital, your schedule, your temperament, and your tax situation &mdash; not which one Twitter is currently glorifying.</p>
+
+        <h2>The three approaches, defined precisely</h2>
+
+        <p>Before comparing, let's nail down what we're comparing:</p>
+
+        <ul>
+            <li><strong>Intraday trading.</strong> All positions opened and closed the same trading day. No overnight risk. Income classified as <em>speculative business income</em> by the Income Tax Department, taxed at your slab rate. Margin trading is allowed, often at 5x to 20x.</li>
+            <li><strong>Swing trading.</strong> Positions held 2 to 30 trading days. Overnight gap risk accepted. Gains taxed as <em>short-term capital gains</em> (15% if held under 1 year). Margin allowed but typically lower (1x to 5x) and rarely needed.</li>
+            <li><strong>Investing.</strong> Positions held months to years, usually based on company fundamentals rather than chart patterns. Long-term capital gains tax (10% on gains above &#8377;1 lakh per year, if held for more than 1 year). Dividends are taxed at slab rate.</li>
+        </ul>
+
+        <p>Notice the tax treatment differs sharply across these. That alone changes the math significantly &mdash; we'll come back to it.</p>
+
+        <h2>The honest comparison</h2>
+
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Intraday</th>
+                    <th>Swing</th>
+                    <th>Investing</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hold time</td>
+                    <td>Minutes to hours</td>
+                    <td>2 to 30 days</td>
+                    <td>Months to years</td>
+                </tr>
+                <tr>
+                    <td>Screen time</td>
+                    <td>4 to 6 hours/day</td>
+                    <td>30 mins/week</td>
+                    <td>1 hour/month</td>
+                </tr>
+                <tr>
+                    <td>Min capital (realistic)</td>
+                    <td>&#8377;1 lakh</td>
+                    <td>&#8377;1 lakh</td>
+                    <td>&#8377;25,000</td>
+                </tr>
+                <tr>
+                    <td>Trades per year</td>
+                    <td>500 to 2,000+</td>
+                    <td>30 to 150</td>
+                    <td>5 to 20</td>
+                </tr>
+                <tr>
+                    <td>Tax bracket</td>
+                    <td>Slab rate</td>
+                    <td>15% STCG</td>
+                    <td>10% LTCG</td>
+                </tr>
+                <tr>
+                    <td>Brokerage drag</td>
+                    <td>High</td>
+                    <td>Moderate</td>
+                    <td>Negligible</td>
+                </tr>
+                <tr>
+                    <td>Skill ramp-up</td>
+                    <td>1 to 3 years</td>
+                    <td>6 to 18 months</td>
+                    <td>3 to 6 months</td>
+                </tr>
+                <tr>
+                    <td>Emotional intensity</td>
+                    <td>High</td>
+                    <td>Moderate</td>
+                    <td>Low</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Numbers in this table are typical ranges based on common retail experience &mdash; your specific situation will vary. The point isn't the precision; it's the relative shape.</p>
+
+        <h2>The decision framework</h2>
+
+        <p>Forget the comparison table for a moment. Here are the four questions that actually determine which approach fits you.</p>
+
+        <h3>Question 1: How many uninterrupted hours can you watch screens between 9:15 AM and 3:30 PM?</h3>
+
+        <p>If your honest answer is <strong>"zero, I have a job"</strong> &mdash; intraday is off the table. Not because it's bad, but because intraday trading without continuous attention is just slow gambling. You will be exited from positions you should have held, and held positions you should have exited.</p>
+
+        <p>If your answer is <strong>"4 to 6 hours and I can dedicate my career to learning this"</strong> &mdash; intraday is open to you, but understand the implication: you're competing with full-time professional traders who do this for a living. Most retail intraday traders lose money over a 5-year horizon. SEBI's own studies confirm this consistently.</p>
+
+        <p>If your answer is <strong>"I can spend 30 minutes a few times a week, mostly evenings and weekends"</strong> &mdash; swing trading or investing. The choice between them depends on the next questions.</p>
+
+        <h3>Question 2: How quickly do you need feedback to stay engaged?</h3>
+
+        <p>Some people get bored if their trading idea takes more than a week to play out. Others get anxious if they're checking positions every day. This is a temperament question, and there's no right answer.</p>
+
+        <ul>
+            <li>Need fast feedback &mdash; trades resolve in days, not months &mdash; <strong>swing</strong> fits.</li>
+            <li>Comfortable buying a stock and not thinking about it for 6 months &mdash; <strong>investing</strong> fits.</li>
+            <li>Need to see green and red P&amp;L numbers within hours of placing a trade &mdash; <strong>intraday</strong> is what you're describing, but be honest with yourself about whether you need that for trading reasons or for emotional/dopamine reasons. Most people who claim the former actually mean the latter.</li>
+        </ul>
+
+        <h3>Question 3: What capital are you actually working with?</h3>
+
+        <p>Capital affects each approach differently because of fixed costs (brokerage, exchange charges, GST, STT, stamp duty) and the math of position sizing.</p>
+
+        <p>For <strong>investing</strong>, even &#8377;25,000 is enough to start meaningfully. You can buy 5 to 10 stocks, hold for years, and the per-trade costs are negligible against a multi-year holding period. Compounding does the work.</p>
+
+        <p>For <strong>swing trading</strong>, &#8377;1 lakh is roughly the practical floor. Below that, position sizing breaks down: a 0.5% risk on &#8377;50,000 is &#8377;250 per trade. After brokerage and slippage, your stop-loss buffer becomes uneconomic. You either oversize positions to make brokerage worth it (and blow up faster) or trade so small that the wins don't matter.</p>
+
+        <p>For <strong>intraday</strong>, similar floor &mdash; &#8377;1 lakh minimum, and you'll want at least &#8377;3 to 5 lakhs to absorb the inevitable losing streaks without busting out. Margin makes this confusing: yes, you can take &#8377;5 lakh positions on &#8377;25,000 capital. Yes, that's also how most retail intraday accounts blow up.</p>
+
+        <div class="callout">
+            <strong>Capital floor reality check</strong>
+            If you have &#8377;15,000 to &#8377;50,000 to start with, do not start with intraday or swing trading. Start with <strong>investing</strong> in 5 to 10 quality stocks or a low-cost index fund, build the capital base over a year or two while you learn, then revisit the choice. This is unsexy advice but it's the difference between traders who survive and traders who don't.
+        </div>
+
+        <h3>Question 4: How does your tax bracket interact with each option?</h3>
+
+        <p>This is the question almost no one thinks about, and it matters more than people realize.</p>
+
+        <p>If you're in the <strong>30% income tax slab</strong> (taxable income above &#8377;15 lakh), intraday gains are taxed at 30% as speculative business income. Swing trading gains are taxed at 15% (STCG). Investing gains held for over 1 year are taxed at 10% (LTCG, on gains above &#8377;1 lakh). For a 30%-bracket earner, the same gross profit yields different net returns:</p>
+
+        <ul>
+            <li>&#8377;1,00,000 intraday profit &rarr; &#8377;70,000 net</li>
+            <li>&#8377;1,00,000 swing profit &rarr; &#8377;85,000 net</li>
+            <li>&#8377;1,00,000 long-term investing profit &rarr; &#8377;90,000 net (and the first &#8377;1 lakh per year is exempt)</li>
+        </ul>
+
+        <p>If you're in the <strong>10% slab or below</strong> (taxable income under &#8377;7 lakh), the difference shrinks but doesn't vanish. STCG at 15% is still flat &mdash; meaning a low earner pays 15% on swing gains even though their slab rate is lower.</p>
+
+        <p>Tax doesn't change which approach is best for you, but it does change how much edge each approach needs to break even after costs. Intraday traders need a meaningfully higher gross edge than swing traders just to net the same return.</p>
+
+        <h2>Three honest profiles</h2>
+
+        <p>Let me describe three real-world profiles. Find which one matches you.</p>
+
+        <h3>Profile A: The full-time professional</h3>
+
+        <p>Capital: &#8377;3 lakh+. Day job: software engineer / consultant / business owner with 9-to-6 schedule. Available time: 30 minutes morning + 1 hour evening + weekends. Tax bracket: 30%. Goal: 12-25% annual returns to outpace inflation and FDs without becoming a second job.</p>
+
+        <p><strong>Best fit: swing trading + a core investment portfolio.</strong> Run a swing system on 30-50% of capital. Keep the rest in long-term equity / index funds. Both compound. Neither demands screen time. Tax efficiency is reasonable.</p>
+
+        <h3>Profile B: The early-career builder</h3>
+
+        <p>Capital: &#8377;25,000 to &#8377;1 lakh. Day job: junior employee / college student / fresher. Available time: variable. Tax bracket: 5-20%. Goal: learn while not blowing up the small capital base.</p>
+
+        <p><strong>Best fit: investing first, swing trading later.</strong> The capital floor for swing is &#8377;1 lakh and you're not there yet. Use this period to (a) build capital through investing in 5-10 quality stocks or index funds, (b) paper-trade swing strategies on a tool like Tradosaurus to learn without losing money, (c) revisit the choice in 18-24 months when capital base supports active trading.</p>
+
+        <h3>Profile C: The aspiring full-timer</h3>
+
+        <p>Capital: &#8377;5 lakh+. Day job: considering quitting to trade full-time. Available time: full days, indefinitely. Tax bracket: variable depending on past job. Goal: replace salary income with trading income.</p>
+
+        <p><strong>Best fit: don't quit your job yet.</strong> This is the least popular advice and the most important. Studies of retail traders consistently show that 90%+ lose money in the first 3 years of full-time trading. Test your edge for at least 18 months part-time first. If your part-time edge is real, you'll know &mdash; and if it isn't, you'll have learned that without bleeding your savings.</p>
+
+        <p class="pull-quote">
+            The wrong question is "which makes the most money." The right question is "which can I do consistently for 10 years without burning out, blowing up, or getting divorced."
+        </p>
+
+        <h2>What if you're still not sure?</h2>
+
+        <p>A useful default for anyone reading this learning hub: <strong>start with investing in a small index-fund position, layer swing trading on top once your capital and time allow it, and avoid intraday until you've proven a real edge in the slower formats.</strong></p>
+
+        <p>That's not because intraday is uniquely evil. It's because it's the hardest of the three, demands the most attention, and has the worst tax treatment for most retail earners. Get the easier formats working first. If you still want intraday after that, you'll come at it with capital, discipline, and realistic expectations &mdash; the things that determine whether intraday works for the rare few who actually make it work.</p>
+
+        <p>The next article in this series gets concrete about returns. Specifically: what realistic CAGR ranges look like across these three formats, and why the popular "I make 20% a month" claims are statistically impossible to sustain.</p>
+
+    </div>
+</article>
+
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to start swing trading the right way?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+
+</body>
+</html>
