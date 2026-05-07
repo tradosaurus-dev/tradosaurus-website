@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volatility Contraction Pattern (VCP): Minervini's classic, tested. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="Mark Minervini's VCP pattern explained from first principles. The exact rule set, why volatility contraction matters, and the adaptations needed for Indian markets.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        /* Rules box — used for entry/exit rules */
+        .rules-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-left: 4px solid var(--accent); border-radius: 4px; padding: var(--s-5); margin: var(--s-5) 0; }
+        .rules-box h4 { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 var(--s-3) 0; font-weight: 600; }
+        .rules-box ol, .rules-box ul { margin: 0; padding-left: var(--s-5); font-size: 16px; }
+        .rules-box li { margin-bottom: var(--s-2); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#strategies">Strategy Deep Dives</a>
+        </div>
+        <h1>Volatility Contraction Pattern (VCP): Minervini's classic, tested.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Intermediate</span>
+            <span>15 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>In 1997, Mark Minervini won the U.S. Investing Championship with a 155% annual return. He published his methodology in two books, <em>Trade Like a Stock Market Wizard</em> (2013) and <em>Think and Trade Like a Champion</em> (2017). At the heart of his approach is a single chart pattern: the Volatility Contraction Pattern, or VCP.</p>
+
+        <p>VCP is, in essence, a refined version of base-breakout trading &mdash; the same family as Darvas Box and William O&apos;Neil&apos;s cup-with-handle. What makes it distinct is the explicit volatility filter: VCP requires not just a consolidation, but a series of progressively tighter consolidations within the consolidation. The pattern looks like a stock taking deeper breaths that get gradually shallower, until volatility compresses to almost nothing &mdash; right before a clean breakout.</p>
+
+        <p>The pattern is well-tested in U.S. markets. The question this article answers: does it work on Nifty stocks? The short answer is yes, with adaptations. Here&apos;s the long version.</p>
+
+        <h2>The pattern in plain terms</h2>
+
+        <p>A VCP setup begins with a stock that has had a meaningful run-up &mdash; typically 25-100% over the prior 1-6 months. The stock then enters a consolidation phase. What separates a VCP from a generic consolidation is what happens inside the consolidation:</p>
+
+        <ol>
+            <li><strong>The first pullback</strong> from the recent high is moderately deep &mdash; say 10-25%. This is normal profit-taking after a strong move.</li>
+            <li><strong>The stock recovers</strong>, makes a new local high or comes close to it, then pulls back again.</li>
+            <li><strong>The second pullback is shallower</strong> than the first &mdash; maybe 5-15%. Buyers stepped in faster this time.</li>
+            <li><strong>The stock recovers again</strong>, then pulls back a third time.</li>
+            <li><strong>The third pullback is shallower still</strong> &mdash; perhaps 3-8%. Volatility is dropping.</li>
+            <li><strong>Volume contracts noticeably</strong> during these pullbacks. By the third pullback, daily volume should be well below the recent average.</li>
+            <li><strong>Eventually, price breaks out</strong> above the consolidation&apos;s upper boundary on a sharp expansion of volume.</li>
+        </ol>
+
+        <p>The visual signature: a series of swings that look like a coiled spring &mdash; each swing tighter than the last, on declining volume, before a sudden release.</p>
+
+        <p class="pull-quote">
+            VCP isn&apos;t a single pattern. It&apos;s a sequence of patterns, each one tighter than the last, that collectively reveal a stock running out of sellers.
+        </p>
+
+        <h2>Why volatility contraction matters</h2>
+
+        <p>The contractions tell you something about who&apos;s left in the stock. After the first pullback, weak hands have already sold &mdash; they entered late, took a small loss, and left. After the second pullback, slightly stronger hands have sold. After the third, the only people still holding are typically committed long-term holders.</p>
+
+        <p>By the time the contraction is at its tightest, most of the available supply has been distributed to firmer hands. Any meaningful demand from new buyers will overwhelm the remaining supply, causing a sharp breakout. The volatility contraction <em>is</em> the supply being absorbed.</p>
+
+        <p>This is why volume confirmation matters so much in VCP: a breakout on weak volume suggests the supply hasn&apos;t actually been absorbed. A breakout on heavy volume suggests committed buying that&apos;s overwhelming whatever supply remained.</p>
+
+        <h2>The full VCP rule set (Minervini-style)</h2>
+
+        <p>Minervini&apos;s exact specifications, adapted for general use:</p>
+
+        <div class="rules-box">
+            <h4>Pre-VCP Conditions (Trend Template)</h4>
+            <ol>
+                <li>Stock is in a confirmed Stage 2 uptrend &mdash; price above 50-day SMA, 50-day above 150-day, 150-day above 200-day, and the 200-day SMA is rising for at least 1 month.</li>
+                <li>Current price is at least 30% above the 52-week low.</li>
+                <li>Current price is within 25% of the 52-week high.</li>
+                <li>Relative strength rank vs the broader index is in the top quartile (e.g., RS rating 70+).</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>VCP Pattern Identification</h4>
+            <ol>
+                <li>Stock has had a strong prior advance (typically 25%+ over prior 1-6 months).</li>
+                <li>The consolidation has 2-6 distinct contractions visible.</li>
+                <li>Each contraction is shallower than the previous &mdash; the depth ratio should roughly halve each time (e.g., 20%, then 10%, then 5%).</li>
+                <li>The final contraction is typically 3-8% deep &mdash; much shallower than this and there&apos;s no real test left; deeper and the consolidation isn&apos;t complete.</li>
+                <li>Volume during contractions is below the 50-day average. Ideally, volume on the most recent contraction is near multi-month lows.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Entry Trigger</h4>
+            <ol>
+                <li>Pivot point: the high of the most recent (tightest) contraction.</li>
+                <li>Entry: price closes above the pivot on volume that&apos;s at least 1.5-2x the recent average.</li>
+                <li>Optional: enter on a pivot stop-buy order intraday for slightly earlier entry; risk is whipsaws on intraday spikes that close back down.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Exit Rules</h4>
+            <ol>
+                <li><strong>Initial stop:</strong> below the low of the final contraction. Some traders use 7-8% below the pivot as a fixed-percentage stop.</li>
+                <li><strong>Profit-taking:</strong> Minervini suggests taking partial profits at 2x the initial risk (2R), and trailing the rest with a moving-average exit (e.g., close below 21-day EMA).</li>
+                <li><strong>Failure exit:</strong> if price re-enters the consolidation pattern within 5-10 days of breakout, the breakout has failed &mdash; exit immediately.</li>
+            </ol>
+        </div>
+
+        <h2>VCP&apos;s strengths</h2>
+
+        <p>Three reasons VCP is one of the more respected patterns in technical trading:</p>
+
+        <h3>1. The volatility filter excludes weak setups</h3>
+
+        <p>Generic breakout strategies fire signals on any consolidation. VCP&apos;s requirement for progressively tighter contractions filters out 80%+ of breakout candidates. What remains is a small set of stocks where the pattern math suggests supply has been genuinely absorbed.</p>
+
+        <h3>2. The setup is rare, which is a feature</h3>
+
+        <p>A clean VCP doesn&apos;t form often. Most weeks, you&apos;ll find zero or one valid setup across an entire universe of NSE stocks. This is a feature, not a bug. The strategy demands patience and rewards selectivity. Traders who can&apos;t accept periods of inactivity will struggle with VCP; traders who can will find that the rare signals are higher-quality than higher-frequency strategies.</p>
+
+        <h3>3. The pivot point gives a clear stop</h3>
+
+        <p>Because VCP defines an exact pivot (the top of the tightest contraction), you have an unambiguous stop level (the bottom of that same contraction). Risk-per-trade is precisely calculable. This makes position sizing mechanical and removes a category of judgment errors.</p>
+
+        <h2>Where VCP fails</h2>
+
+        <h3>Failure mode 1: False contractions</h3>
+
+        <p>Sometimes a stock looks like it&apos;s forming a valid VCP, but the contractions aren&apos;t actually getting tighter &mdash; they&apos;re just irregular. The eye sees a pattern that isn&apos;t structurally there. Mitigation: measure each contraction precisely. The depth ratio of consecutive contractions should approximately halve. If it doesn&apos;t, the pattern isn&apos;t a true VCP.</p>
+
+        <h3>Failure mode 2: Premature breakouts</h3>
+
+        <p>The pivot fires before the contraction is fully complete. Volume is decent but not exceptional, the breakout looks valid for a few days, then price slips back into the range. Mitigation: be strict about the volume requirement. If breakout volume isn&apos;t at least 1.5x the recent average, skip the trade. Many traders use 2x as their threshold.</p>
+
+        <h3>Failure mode 3: Overall market reversal</h3>
+
+        <p>VCP works best when the broader market is supportive. During market downtrends or sharp corrections, even valid VCPs frequently fail because index-wide selling overwhelms individual stock setups. Mitigation: monitor the index. When Nifty breaks below its 50-day MA on heavy volume, pause new VCP entries until conditions normalize.</p>
+
+        <h2>Adapting VCP for NSE stocks</h2>
+
+        <p>Two practical adaptations matter for Indian markets:</p>
+
+        <h3>1. Volume thresholds need adjustment</h3>
+
+        <p>U.S. markets have far more institutional participation than Indian markets. The "1.5x average volume" breakout confirmation that works in the U.S. can fire prematurely in Indian midcaps where individual large orders can dominate volume statistics. For Indian stocks, especially below the Nifty 50, consider using 2x or higher volume thresholds.</p>
+
+        <h3>2. Earnings clustering is more disruptive</h3>
+
+        <p>Indian earnings are concentrated in specific weeks each quarter (the result-week clusters). VCP setups that complete just before earnings often have unusable risk profiles &mdash; you might have a 5% stop on the pivot, but earnings can move the stock 8% in either direction. Either avoid VCPs with breakouts within 5 days of an upcoming earnings release, or size down meaningfully if you must trade them.</p>
+
+        <h3>3. Smallcap caution</h3>
+
+        <p>VCP works best on liquid stocks with daily turnover of at least &#8377;5-10 crore. In smaller, less liquid stocks, the volatility contraction pattern can be artificially tight simply because of low trading interest, not because supply is being absorbed. The "tightness" is a low-volume artifact, not a structural signal.</p>
+
+        <h2>Performance considerations</h2>
+
+        <p>VCP, when correctly identified, has historically been one of the higher-quality setups in technical trading. Its specific performance on NSE stocks depends on the precise parameters used (how strict the contraction-depth requirement is, how high the volume threshold is, etc.) and on the universe being tested.</p>
+
+        <p>One general observation: <strong>VCP signals are infrequent but tend to have higher hit rates than less selective patterns.</strong> A trader running pure VCP might take 20-40 trades per year on the entire Nifty 500, with hit rates in the 50-60% range and large average winners. The total profit per year may be similar to a higher-frequency strategy, but the path is calmer &mdash; fewer trades, fewer decisions, lower psychological load.</p>
+
+        <h2>What this means for you</h2>
+
+        <p>VCP is the right strategy for traders with patience and selectivity. It punishes traders who force signals during dry periods and rewards traders who wait for the rare clean setup. If you find yourself constantly looking for "almost-VCP" patterns to fill the gaps, the strategy isn&apos;t for you &mdash; that behavior will erode the edge entirely.</p>
+
+        <p>VCP also pairs well with other strategies. Many disciplined traders use TPB and Darvas for higher-frequency activity, and reserve VCP for their highest-conviction setups with larger position sizes. The mental model: TPB and Darvas are bread-and-butter; VCP is the steak.</p>
+
+        <p>The next strategy article covers Williams %R mean reversion &mdash; a fundamentally different family of setups that buys oversold conditions in already-strong stocks. It&apos;s the counterpart to all the breakout-based strategies we&apos;ve covered so far.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to backtest this strategy on your own data?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

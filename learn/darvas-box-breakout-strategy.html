@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darvas Box Breakout: a 70-year-old idea that still works. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="Nicolas Darvas&#39;s 1959 box theory adapted for modern NSE stocks. The full rule set, why the pattern endures, and the predictable failure modes to watch for.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        /* Rules box — used for entry/exit rules */
+        .rules-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-left: 4px solid var(--accent); border-radius: 4px; padding: var(--s-5); margin: var(--s-5) 0; }
+        .rules-box h4 { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 var(--s-3) 0; font-weight: 600; }
+        .rules-box ol, .rules-box ul { margin: 0; padding-left: var(--s-5); font-size: 16px; }
+        .rules-box li { margin-bottom: var(--s-2); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#strategies">Strategy Deep Dives</a>
+        </div>
+        <h1>Darvas Box Breakout: a 70-year-old idea that still works.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Intermediate</span>
+            <span>16 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>In 1959, a Hungarian-born ballroom dancer named Nicolas Darvas published a book called <em>How I Made $2,000,000 in the Stock Market</em>. He was on tour in Asia, far from any newspaper or trading floor. The only information he received was a daily telegram from his broker with closing prices. From that constraint &mdash; pure price data, no news, no commentary &mdash; he developed a remarkably simple system that turned $25,000 into over $2 million.</p>
+
+        <p>The system was the Darvas Box. It&apos;s 65 years old, was developed without computers, with information that arrived days late, and somehow it still works on modern NSE stocks. This article explains why &mdash; and where it stops working.</p>
+
+        <h2>The core idea</h2>
+
+        <p>Darvas noticed that strong stocks tend to advance in steps, not smooth lines. After a strong move, a stock would consolidate sideways in a narrow range for days or weeks. Then it would break out of that range and start a new advance. Each consolidation looked like a "box" on his price charts, with a clear top and bottom.</p>
+
+        <p>His insight was that <strong>the breakout from a well-defined box was a much higher-probability buy signal than buying anywhere else in the price action.</strong> Buying inside the box was speculation about which way it would resolve. Buying after a confirmed breakout meant the market had already chosen direction.</p>
+
+        <p>The original Darvas method had three components:</p>
+
+        <ol>
+            <li><strong>Identify the box:</strong> a stock&apos;s recent high becomes the top of the box once price has stayed below it for 3+ days. The recent low becomes the bottom of the box once price has stayed above it for 3+ days. Both conditions must be true.</li>
+            <li><strong>Wait for breakout:</strong> price must close above the box top, ideally on increased volume. Don&apos;t buy intraday penetrations; require a confirmed daily close.</li>
+            <li><strong>Place a stop:</strong> initial stop just below the box bottom. As price advances and forms a new higher box, raise the stop to just below the new box bottom. The stops "follow" the boxes upward.</li>
+        </ol>
+
+        <p>That&apos;s the entire system. No oscillators, no moving averages, no fundamental analysis. Darvas was famously dismissive of news and earnings &mdash; he believed price had already digested all available information by the time he read about it.</p>
+
+        <h2>Why it still works</h2>
+
+        <p class="pull-quote">
+            What Darvas observed in 1959 wasn&apos;t a quirk of his era. It was a behavioral pattern of how thousands of participants accumulate and distribute stocks &mdash; and human behavior hasn&apos;t changed.
+        </p>
+
+        <p>The mechanic behind the box pattern is durable. After a stock advances, it tends to consolidate while:</p>
+
+        <ul>
+            <li>Early buyers take profits</li>
+            <li>New buyers wait for confirmation that the trend is intact</li>
+            <li>Sellers from a higher level attempt to cap the price (resistance)</li>
+            <li>Buyers from a lower level support the price (support)</li>
+        </ul>
+
+        <p>This standoff resolves when one side overwhelms the other. A breakout above the box top means buyers have absorbed all the supply at that level &mdash; the resistance ceiling has cracked. By definition, this means more buying pressure exists than was visible during the consolidation.</p>
+
+        <p>Modern algorithms and high-frequency trading don&apos;t change this dynamic; they accelerate it. The boxes form faster and break with sharper energy than they did in Darvas&apos;s day, but they form for the same reasons.</p>
+
+        <h2>The modern Darvas Box rules</h2>
+
+        <p>The original Darvas method has been refined by traders since 1959. Here&apos;s a typical modern adaptation, suitable for NSE stocks:</p>
+
+        <div class="rules-box">
+            <h4>Box Identification</h4>
+            <ol>
+                <li>Identify the highest high of the past 20-30 trading days. This becomes the <strong>provisional box top</strong>.</li>
+                <li>The box top is <strong>confirmed</strong> when price has closed below this high for at least 3 consecutive trading days.</li>
+                <li>The lowest low <em>after</em> the confirmed box top becomes the <strong>provisional box bottom</strong>.</li>
+                <li>The box bottom is <strong>confirmed</strong> when price has closed above this low for at least 3 consecutive trading days.</li>
+                <li>The box is "valid" only after both top and bottom are confirmed. The box height (top minus bottom) should typically be 5-15% of price &mdash; very wide boxes (20%+) are too volatile to trade reliably.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Entry Rules</h4>
+            <ol>
+                <li><strong>Trend qualification:</strong> the stock must be in a confirmed uptrend (price above 50-day SMA, ideally above 200-day SMA, both rising).</li>
+                <li><strong>Breakout trigger:</strong> price closes above the confirmed box top. Intraday spikes that close back below the box don&apos;t count.</li>
+                <li><strong>Volume confirmation:</strong> breakout volume should be at least 1.5x the average volume of the past 20 days. Low-volume breakouts have a meaningfully higher failure rate.</li>
+                <li><strong>Buy at the open of the next day,</strong> or use a stop-buy order placed just above the box top to enter intraday on the same day if your broker supports it.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Exit Rules</h4>
+            <ol>
+                <li><strong>Initial stop loss:</strong> just below the box bottom (the confirmed low that defined the box). If price re-enters the box, the breakout has failed and you&apos;re out.</li>
+                <li><strong>Trail by new boxes:</strong> as price advances, watch for new boxes to form at higher levels. Once a new higher box is confirmed, raise your stop to just below the new box bottom. Stops &quot;ratchet&quot; upward, never downward.</li>
+                <li><strong>Final exit:</strong> when price breaks below the most recent box bottom, exit. There&apos;s no fixed profit target &mdash; let winners run as long as new boxes keep forming above old ones.</li>
+            </ol>
+        </div>
+
+        <h2>The strength of the Darvas system</h2>
+
+        <p>Three things make Darvas Box particularly attractive:</p>
+
+        <h3>1. The trailing-stop mechanic captures big winners</h3>
+
+        <p>Most strategies have fixed profit targets. Darvas has none. As long as a stock keeps forming higher boxes, you stay in the trade. This means a single position can ride a 50% or 100% advance, contributing dramatically to the overall portfolio result. The system is designed to <strong>let winners run far longer than losers run</strong>, which is the structural source of edge in trend-following.</p>
+
+        <h3>2. The rules are unambiguous</h3>
+
+        <p>Where TPB&apos;s pullback rules involve some judgment ("how deep is the pullback allowed to be"), Darvas Box rules are mechanical. Either price has closed above the box for 3 days or it hasn&apos;t. Either today&apos;s close is above the box top or it isn&apos;t. This makes Darvas one of the easier strategies to backtest and one of the easier strategies to follow without behavioral drift.</p>
+
+        <h3>3. It self-rejects bad setups</h3>
+
+        <p>The 3-day confirmation rule for box top and box bottom eliminates a huge category of false signals. Stocks in choppy ranges generate provisional boxes constantly, but they rarely meet the confirmation requirement &mdash; price re-tests the high or low within a few days, invalidating the box. By the time a Darvas box is fully confirmed, the stock has already demonstrated structural stability around those levels.</p>
+
+        <h2>Where Darvas Box fails</h2>
+
+        <p>Three predictable failure modes:</p>
+
+        <h3>Failure mode 1: Choppy or sideways markets</h3>
+
+        <p>When the broader market is in a wide trading range, individual stocks form boxes that break out only to fail back into the box days later. You take a position, get stopped out, watch the stock re-enter the box, see another breakout, take another position, get stopped out again. The strategy bleeds capital from death by a thousand cuts.</p>
+
+        <p>Mitigation: pause new Darvas entries when the broader market itself is in a clear box (Nifty trading sideways for several weeks). The strategy works best when both the index and the individual stock are trending.</p>
+
+        <h3>Failure mode 2: Wide boxes</h3>
+
+        <p>A box that&apos;s 20% wide gives you a 20% stop-loss buffer to the box bottom &mdash; which means even small position sizes have outsized rupee risk. Worse, wide boxes signal the underlying volatility is high, which often means choppier trading inside the box and less reliable breakouts.</p>
+
+        <p>Mitigation: skip boxes wider than ~10-12% of price for typical setups. The cleanest Darvas trades come from boxes that are 5-8% wide.</p>
+
+        <h3>Failure mode 3: Earnings and event risk</h3>
+
+        <p>Darvas&apos;s original method was pure technicals, ignoring news. In modern Indian markets, scheduled events (earnings, dividend declarations, RBI policy days) can blow through both box tops and box bottoms in a single session. A clean Darvas breakout right before earnings can reverse violently the next day.</p>
+
+        <p>Mitigation: check the earnings calendar before entering. Avoid new Darvas entries within 5 trading days of an upcoming earnings release.</p>
+
+        <h2>Tight Box vs Wide Box variants</h2>
+
+        <p>Tradosaurus (and most modern Darvas implementations) offer two parameter sets:</p>
+
+        <ul>
+            <li><strong>Tight Box:</strong> requires shorter consolidations (e.g., 7-15 days), narrower box widths (4-8%), and stricter volume confirmation. Generates fewer signals; higher hit rate per signal.</li>
+            <li><strong>Wide Box:</strong> allows longer consolidations (15-30 days), wider box widths (8-15%), and more lenient volume requirements. Generates more signals; lower hit rate per signal.</li>
+        </ul>
+
+        <p>Neither is universally better. Tight boxes suit traders who want quality over quantity and don&apos;t mind weeks without signals. Wide boxes suit traders who need consistent activity and accept more frequent stop-outs. The relative performance depends on the specific market regime &mdash; tight boxes outperform in steady trends; wide boxes outperform when trends are punctuated by deeper pullbacks.</p>
+
+        <h2>Performance considerations</h2>
+
+        <p>The Darvas approach is positive-expectancy in equity markets that have meaningful trends. Its specific performance depends on parameter choice (tight vs wide), universe (large caps vs midcaps), and the broader market regime during the test period.</p>
+
+        <p>One characteristic worth noting: <strong>Darvas tends to have lower hit rates than pullback strategies, but larger average winners.</strong> A typical Darvas Box implementation might win on 40-45% of trades, but the trailing-stop mechanic lets the winners run, producing average winners 2-3x the average losers. The math works out positive over hundreds of trades, but the path is bumpier than higher-hit-rate strategies.</p>
+
+        <div class="callout">
+            <strong>The behavioral test</strong>
+            Darvas Box punishes traders who close winners early. The system&apos;s edge depends entirely on letting trailing stops do their job &mdash; if you exit at the first profit because "I&apos;m up 15%, let me lock it in," you&apos;ve broken the strategy. Run Darvas on a paper-trading account for at least 3 months before going live, specifically to train yourself to hold winners through normal pullbacks.
+        </div>
+
+        <h2>What this means for you</h2>
+
+        <p>Darvas Box is a useful strategy for traders who want to capture multi-month trends in individual stocks. Its strengths &mdash; mechanical rules, no fixed profit target, asymmetric payoffs &mdash; align with what trend-following requires. Its failure modes &mdash; choppy markets, wide boxes, earnings risk &mdash; are all knowable in advance and can be filtered out.</p>
+
+        <p>The strategy pairs well with TPB. TPB tends to give you frequent shorter-duration trades; Darvas gives you fewer longer-duration ones. Running both, on different stocks, is a reasonable form of diversification within a single trader&apos;s portfolio.</p>
+
+        <p>The next strategy article covers the Volatility Contraction Pattern (VCP) &mdash; Mark Minervini&apos;s adaptation of base-breakout trading that adds an explicit volatility-compression filter. It&apos;s a more selective cousin of Darvas, with different trade-offs in signal frequency vs hit rate.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to backtest this strategy on your own data?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

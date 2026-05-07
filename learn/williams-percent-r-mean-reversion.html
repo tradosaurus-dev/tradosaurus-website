@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Williams %R mean reversion: when oversold actually means buy. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="A filtered Williams %R strategy that produces real mean-reversion edge in trending stocks. The full rule set, why most oversold indicators fail, and the conditions that make %R reliable.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        /* Rules box — used for entry/exit rules */
+        .rules-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-left: 4px solid var(--accent); border-radius: 4px; padding: var(--s-5); margin: var(--s-5) 0; }
+        .rules-box h4 { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 var(--s-3) 0; font-weight: 600; }
+        .rules-box ol, .rules-box ul { margin: 0; padding-left: var(--s-5); font-size: 16px; }
+        .rules-box li { margin-bottom: var(--s-2); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#strategies">Strategy Deep Dives</a>
+        </div>
+        <h1>Williams %R mean reversion: when oversold actually means buy.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Advanced</span>
+            <span>14 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>Most "oversold" indicators don&apos;t work for buying. Stochastic oscillators, RSI extremes, MACD crossovers &mdash; tested rigorously, they fire false signals as often as they fire real ones. The pattern is consistent enough that experienced traders learn to ignore raw oversold readings entirely.</p>
+
+        <p>Williams %R is different &mdash; not because the indicator itself is special, but because of the specific filter conditions that make it useful. When applied carelessly, %R produces the same noise as any other oscillator. When applied with strict trend and volume filters, it becomes a sharp tool for catching short-term reversals in already-strong stocks. This article shows you the difference.</p>
+
+        <h2>What Williams %R measures</h2>
+
+        <p>Williams %R, developed by Larry Williams in 1973, is a momentum oscillator. It measures the current closing price relative to the highest high and lowest low over a lookback period (typically 14 days).</p>
+
+        <p>The formula:</p>
+
+        <p><code>%R = (Highest High &minus; Close) / (Highest High &minus; Lowest Low) &times; -100</code></p>
+
+        <p>The output ranges from 0 to -100. A value of -20 means today&apos;s close is in the top 20% of the recent range. A value of -80 means today&apos;s close is in the bottom 20% of the recent range.</p>
+
+        <p>The traditional interpretation:</p>
+        <ul>
+            <li>Above -20 (close to 0): &quot;overbought&quot;</li>
+            <li>Below -80 (close to -100): &quot;oversold&quot;</li>
+        </ul>
+
+        <p>The traditional trade: <strong>buy oversold (%R &lt; -80), sell overbought (%R &gt; -20).</strong></p>
+
+        <p>This traditional approach loses money over time. Across years of backtests, raw %R signals have hit rates close to 50%, with frequent whipsaws and large drawdowns during trending periods. Buying oversold readings in a downtrending stock is just buying a falling knife. Most retail traders who try this approach quit within months.</p>
+
+        <h2>Why mean reversion fails without filters</h2>
+
+        <p>The fundamental problem with raw oscillator-based mean reversion: <strong>it assumes prices will revert to the mean</strong>. But prices don&apos;t always revert. They sometimes trend. They sometimes break down structurally. An oversold reading in a stock that&apos;s genuinely declining isn&apos;t a buy signal &mdash; it&apos;s a stage marker on a longer fall.</p>
+
+        <p class="pull-quote">
+            Oversold doesn&apos;t mean cheap. Oversold means &quot;recently sold off.&quot; In a real downtrend, oversold can stay oversold for weeks while the stock keeps falling.
+        </p>
+
+        <p>This is why every successful mean-reversion approach in equity markets shares one common feature: <strong>it only takes signals in stocks that are already in established uptrends</strong>. The strategy isn&apos;t betting that the stock will reverse from a downtrend &mdash; it&apos;s betting that a temporary pullback within an uptrend will resolve back up.</p>
+
+        <p>This is the only context where mean reversion has consistent edge. In trending stocks, short-term oversold readings often coincide with normal pullbacks that find buyers and resume the trend. The %R signal isn&apos;t predicting a reversal &mdash; it&apos;s timing a re-entry into an existing trend.</p>
+
+        <h2>The Williams %R swing-trading rule set</h2>
+
+        <p>Here&apos;s a strict, filtered implementation that has historically held up better than naive oversold-buying:</p>
+
+        <div class="rules-box">
+            <h4>Pre-conditions (must all be true)</h4>
+            <ol>
+                <li><strong>Trend qualification:</strong> stock&apos;s closing price is above its 50-day SMA, and the 50-day SMA is above the 200-day SMA. Both moving averages are sloping upward.</li>
+                <li><strong>Recent strength:</strong> stock has made a 50-day high within the past 20 trading days. We&apos;re looking for stocks that recently demonstrated strength, now temporarily weak.</li>
+                <li><strong>Volume liquidity:</strong> daily turnover at least &#8377;5 crore (filters out illiquid smallcaps where %R signals are noisy).</li>
+                <li><strong>No major upcoming event:</strong> no earnings release within the next 5 trading days.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Entry Trigger</h4>
+            <ol>
+                <li>Williams %R (14-day lookback) closes below -80 on day 1 (oversold reading).</li>
+                <li>%R remains below -80 for 2-4 consecutive days &mdash; this confirms the pullback is sustained, not a single-day spike.</li>
+                <li>Entry signal: %R closes back above -50 (crossing back up out of oversold). Buy at the next session&apos;s open.</li>
+                <li>Optional confirmation: a green daily candle with above-average volume on the entry day.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Exit Rules</h4>
+            <ol>
+                <li><strong>Initial stop:</strong> the lowest low during the oversold period (the pullback low). If price re-enters the oversold zone, the setup has failed.</li>
+                <li><strong>Profit target:</strong> when %R closes above -20 (overbought zone), exit. Mean-reversion trades target the &quot;mean&quot; (the middle of the range), not new highs.</li>
+                <li><strong>Time stop:</strong> if the trade hasn&apos;t resolved within 8-10 trading days, close it. Stalled mean-reversion trades rarely recover.</li>
+                <li><strong>Maximum holding period:</strong> 15 trading days. Beyond this, the original setup is no longer relevant.</li>
+            </ol>
+        </div>
+
+        <h2>Why this filtered version works</h2>
+
+        <p>Three structural reasons:</p>
+
+        <h3>1. The trend filter eliminates the worst signals</h3>
+
+        <p>Buying %R oversold in any random stock is a coin flip. Buying %R oversold in stocks that have just made 50-day highs is a different statistical population entirely. You&apos;re buying weakness in stocks that just demonstrated strength &mdash; the regression-to-trend dynamic genuinely operates in this group.</p>
+
+        <h3>2. The 2-4 day persistence requirement filters single-day noise</h3>
+
+        <p>A single-day %R spike below -80 is often just intraday volatility that gets bought back the same day. By requiring the indicator to stay oversold for 2+ days, you ensure the pullback is real &mdash; meaning supply has actually been available at lower prices, and that supply will be exhausted before the trade fires.</p>
+
+        <h3>3. The exit target is realistic</h3>
+
+        <p>Mean-reversion trades shouldn&apos;t target new highs. They should target the midpoint of the range. A %R reading crossing back above -20 (overbought) is the natural exit &mdash; it means the pullback has fully resolved, and any further upside requires the stock to begin a new advance, which is a different setup entirely. Exiting at -20 captures the mean-reversion edge cleanly without overstaying.</p>
+
+        <h2>Where Williams %R fails</h2>
+
+        <h3>Failure mode 1: Trend changes</h3>
+
+        <p>The strategy assumes the existing uptrend will resume after the pullback. When a stock is actually transitioning from Stage 2 to Stage 3 (topping), pullbacks that look like normal mean-reversion setups instead resolve into deeper declines. You&apos;ll see a series of trades that "almost worked" before the stop is hit. Mitigation: a sequence of 2-3 consecutive Williams %R losses in different stocks often signals the broader market regime is changing &mdash; pause new entries and reassess.</p>
+
+        <h3>Failure mode 2: Gap-down events</h3>
+
+        <p>Mean-reversion stops are typically 4-7% below entry. A negative news event or earnings surprise can gap a stock 8-15% lower overnight, exceeding the stop. You exit at a much worse price than planned. There&apos;s no perfect mitigation &mdash; gap risk is intrinsic to overnight positions &mdash; but avoiding entries before scheduled events (earnings, RBI policy days) reduces the exposure.</p>
+
+        <h3>Failure mode 3: Strong-trend exhaustion</h3>
+
+        <p>In stocks that have moved very far above their moving averages (extended runs), %R oversold readings can occur during the natural cooling-off period of an exhausted advance. The pullback that looks like a mean-reversion setup is actually the start of a deeper correction. Mitigation: avoid entries when the stock is more than 15-20% above its 50-day SMA. Such extreme extension often precedes deeper retracements that don&apos;t fit the strategy&apos;s profile.</p>
+
+        <h2>Williams %R vs RSI &mdash; why one over the other</h2>
+
+        <p>RSI (Relative Strength Index) is more popular than Williams %R, but functionally they capture similar information. Williams %R has two minor advantages for swing traders:</p>
+
+        <ul>
+            <li><strong>%R is more responsive.</strong> It moves faster than RSI in the same conditions, meaning entries can be slightly earlier &mdash; useful for short-duration mean-reversion trades where timing matters.</li>
+            <li><strong>The fixed range (0 to -100) makes thresholds more interpretable.</strong> RSI thresholds (typically 30/70) are slightly less intuitive than %R&apos;s -80/-20 because %R is symmetric around -50.</li>
+        </ul>
+
+        <p>For practical purposes, an RSI-based version of the same strategy with appropriately adjusted thresholds (e.g., RSI &lt; 30 / RSI &gt; 50 reversal) would behave very similarly. The choice between %R and RSI is more about personal preference than meaningful edge difference.</p>
+
+        <h2>Performance considerations</h2>
+
+        <p>The filtered Williams %R approach is positive-expectancy in trending markets, particularly for stocks that have a history of mean-reverting after pullbacks. Specific performance depends on the strictness of the trend filter, the universe tested, and the broader market regime.</p>
+
+        <p>A general observation: <strong>mean-reversion strategies tend to have higher hit rates but smaller average winners than trend-following strategies.</strong> A typical filtered %R implementation might win 50-60% of trades, but average winners might only be 1.2-1.5x average losers. The math still works out positive, but the per-trade payoff is more modest than with breakout-based strategies. The trade-off is more frequent activity and smoother equity curves.</p>
+
+        <div class="callout">
+            <strong>The discipline question</strong>
+            Mean reversion punishes traders who add to losers. The strategy depends on respecting the stop precisely &mdash; if you "average down" on positions that go against you, you turn a 4% stop into a 10% loss when the original premise was wrong. The single most common failure mode in retail mean-reversion trading is not the strategy itself; it&apos;s the human tendency to refuse exit when the strategy says to.
+        </div>
+
+        <h2>What this means for you</h2>
+
+        <p>Williams %R, applied with strict filters, gives you a way to participate in pullbacks within trends. It complements the breakout strategies covered earlier &mdash; TPB, Darvas Box, VCP &mdash; which all buy strength. %R buys weakness within strength, which is structurally a different setup with different timing characteristics.</p>
+
+        <p>For traders running multiple strategies, %R signals tend to fire on different days than breakout signals, providing genuine diversification within a single account. A stock that just had a TPB breakout won&apos;t generate a %R buy signal until it has a meaningful pullback days or weeks later &mdash; meaning the same stock can be traded twice through different strategies.</p>
+
+        <p>The next strategy article covers Bollinger Band Squeeze &mdash; another approach that combines volatility and momentum, but with a focus on detecting low-volatility periods that precede explosive moves.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to backtest this strategy on your own data?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

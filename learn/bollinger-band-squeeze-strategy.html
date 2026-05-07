@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bollinger Band Squeeze: trading the calm before the storm. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="The Bollinger Band Squeeze setup explained from first principles. How volatility compression precedes expansion, the exact rule set, and the conditions where the strategy fails.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        /* Rules box — used for entry/exit rules */
+        .rules-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-left: 4px solid var(--accent); border-radius: 4px; padding: var(--s-5); margin: var(--s-5) 0; }
+        .rules-box h4 { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 var(--s-3) 0; font-weight: 600; }
+        .rules-box ol, .rules-box ul { margin: 0; padding-left: var(--s-5); font-size: 16px; }
+        .rules-box li { margin-bottom: var(--s-2); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#strategies">Strategy Deep Dives</a>
+        </div>
+        <h1>Bollinger Band Squeeze: trading the calm before the storm.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Advanced</span>
+            <span>17 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>Markets alternate between two states: low volatility (price compressed in a narrow range) and high volatility (price moving sharply in a clear direction). The two states aren&apos;t independent &mdash; periods of low volatility tend to be followed by periods of high volatility, and vice versa. This is one of the most consistent observations in market behavior, often called <em>volatility clustering</em>.</p>
+
+        <p>The Bollinger Band Squeeze is a strategy designed to identify the transition from low to high volatility, ideally entering positions just before the explosive expansion. The setup combines two indicators &mdash; Bollinger Bands and Keltner Channels &mdash; in a specific way that detects unusually compressed market conditions. When done with proper filters, it&apos;s one of the better strategies for catching the start of new trends. Done carelessly, it generates expensive whipsaws.</p>
+
+        <h2>The two indicators that make the squeeze</h2>
+
+        <p>You need two pieces:</p>
+
+        <p><strong>Bollinger Bands</strong> (developed by John Bollinger in the 1980s) are based on standard deviation. The middle band is a 20-day SMA. The upper and lower bands are typically 2 standard deviations above and below this average. In statistical terms, ~95% of price action stays within the bands during normal conditions. When price approaches a band, it&apos;s historically far from the mean.</p>
+
+        <p>Crucially, Bollinger Bands <strong>widen during high volatility and narrow during low volatility.</strong> The bands themselves visually represent how volatile the stock is right now relative to its recent past.</p>
+
+        <p><strong>Keltner Channels</strong> are similar but use Average True Range (ATR) instead of standard deviation. Typical settings: 20-day EMA as the middle, with upper and lower channels at 1.5x ATR above and below. Keltner Channels also expand and contract with volatility, but using a different math.</p>
+
+        <p>The clever part: <strong>the two indicators move together but at different rates.</strong> Standard deviation reacts faster to recent price moves than ATR does. So in highly compressed market conditions, Bollinger Bands can become narrower than Keltner Channels &mdash; meaning Bollinger Bands fit <em>inside</em> Keltner Channels.</p>
+
+        <p>That specific configuration &mdash; Bollinger Bands inside Keltner Channels &mdash; is the squeeze. It signals that volatility has compressed unusually tightly, often a precursor to a sharp expansion in either direction.</p>
+
+        <h2>Why the squeeze precedes movement</h2>
+
+        <p class="pull-quote">
+            Markets don&apos;t consolidate forever. Compressed volatility is a coiled spring &mdash; eventually it releases. The squeeze tells you the spring is at maximum compression. It doesn&apos;t tell you which direction it will release.
+        </p>
+
+        <p>The mechanic: when a stock trades in a tight range for several weeks, supply and demand reach a near-perfect balance. Buyers and sellers are matched closely; neither side dominates. This balance is unstable &mdash; eventually one side overwhelms the other, often triggered by a news catalyst or a critical shift in market sentiment.</p>
+
+        <p>The squeeze indicator merely detects when this state of balance has reached an extreme. It says: "This stock is unusually compressed; expansion is statistically likely soon." It does <strong>not</strong> say "the expansion will be upward." That direction has to come from a separate signal &mdash; usually a momentum oscillator or simply price breaking out of the consolidation.</p>
+
+        <p>This direction-agnostic nature is both the strategy&apos;s strength (it catches moves in either direction) and its main risk (you can&apos;t know in advance which way the breakout will go).</p>
+
+        <h2>The full Bollinger Squeeze rule set</h2>
+
+        <p>The most popular variant comes from John Carter&apos;s adaptation in <em>Mastering the Trade</em> (2005). Here&apos;s the rule set in detail:</p>
+
+        <div class="rules-box">
+            <h4>Squeeze Identification</h4>
+            <ol>
+                <li>Bollinger Bands: 20-period middle band (SMA), upper and lower at 2 standard deviations.</li>
+                <li>Keltner Channels: 20-period EMA middle, upper and lower at 1.5x ATR(20).</li>
+                <li>The squeeze is <strong>active</strong> when both Bollinger Bands are inside the Keltner Channels &mdash; the upper Bollinger Band is below the upper Keltner Channel, and the lower Bollinger Band is above the lower Keltner Channel.</li>
+                <li>The squeeze should persist for at least 6 trading days before considering a trade. Single-day squeezes are too noisy.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Direction Filter (use one)</h4>
+            <ol>
+                <li><strong>Trend bias:</strong> if the stock is in a confirmed Stage 2 uptrend (price above 50-day SMA, 50-day above 200-day, both rising), bias toward long-only entries when the squeeze releases.</li>
+                <li><strong>Momentum oscillator:</strong> use a 12-period momentum indicator. When the oscillator turns from negative to positive, expect upward release. When it turns positive to negative, expect downward release.</li>
+                <li><strong>Price breakout confirmation:</strong> the cleanest filter &mdash; wait for price to close outside the squeezed Bollinger Bands. The direction of the close determines the trade direction.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Entry Trigger</h4>
+            <ol>
+                <li>The squeeze condition must end &mdash; Bollinger Bands expand back outside Keltner Channels.</li>
+                <li>The directional filter (above) must be aligned for an upward trade.</li>
+                <li>Price closes above the upper Bollinger Band on volume that&apos;s at least 1.5x the 20-day average.</li>
+                <li>Buy at the next session&apos;s open, or use a stop-buy order placed just above the breakout level.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>Exit Rules</h4>
+            <ol>
+                <li><strong>Initial stop:</strong> below the lower Bollinger Band at the time of entry, or below the most recent swing low &mdash; whichever is closer.</li>
+                <li><strong>Profit-taking:</strong> partial exit at 2x the initial risk (2R). Trail the rest with the 20-day EMA &mdash; close below the EMA triggers exit.</li>
+                <li><strong>Failure exit:</strong> if price re-enters the squeeze range within 5 days of breakout, the breakout has failed &mdash; exit immediately.</li>
+                <li><strong>Time stop:</strong> if the trade hasn&apos;t reached 1R in 8-10 trading days, exit. Squeeze breakouts that work tend to work quickly.</li>
+            </ol>
+        </div>
+
+        <h2>Why the squeeze setup is interesting</h2>
+
+        <p>Three structural advantages:</p>
+
+        <h3>1. It&apos;s rare and selective</h3>
+
+        <p>True 6+ day squeezes don&apos;t happen often on most stocks. In a typical week, you might find 0-3 valid squeeze candidates across the entire Nifty 500. This selectivity is a feature &mdash; the strategy demands patience and rewards selectivity. Traders looking for daily activity will find squeeze unsatisfying; traders willing to wait for high-quality setups will appreciate the small candidate pool.</p>
+
+        <h3>2. The risk-reward is structurally favorable</h3>
+
+        <p>Squeeze entries place the stop at the lower Bollinger Band &mdash; which, at the time of breakout, is unusually tight relative to normal volatility. Combined with explosive expansion when the squeeze releases, this often produces 3R+ winners against 1R losses. The asymmetry favors the strategy structurally.</p>
+
+        <h3>3. It captures a specific market condition that other strategies miss</h3>
+
+        <p>Trend-following strategies (TPB, Darvas, VCP) excel during established trends. Mean-reversion strategies (Williams %R) excel during pullbacks within trends. Neither captures the <em>start</em> of new trends well &mdash; by the time those strategies generate signals, the trend has already established itself. Squeeze setups specifically target the inflection point where a new trend begins. This makes squeeze a useful complement to other strategies, not a redundant overlap.</p>
+
+        <h2>Where Bollinger Squeeze fails</h2>
+
+        <h3>Failure mode 1: False breakouts</h3>
+
+        <p>Squeezes can release in a single direction temporarily, only to reverse and break the other way. You enter long on the upward release; price spikes for 1-2 days, then collapses through your stop. Mitigation: insist on the volume confirmation. Squeezes that release on weak volume have meaningfully higher failure rates than those releasing on heavy volume.</p>
+
+        <h3>Failure mode 2: Choppy directional confusion</h3>
+
+        <p>Sometimes a squeeze releases and then immediately re-compresses. You enter, the trade goes nowhere, the squeeze reforms. You either get stopped out at break-even or hold a position that never resolves. Mitigation: the time-stop rule (exit after 8-10 days if 1R hasn&apos;t been reached) prevents the position from becoming dead capital.</p>
+
+        <h3>Failure mode 3: News-driven directional whipsaws</h3>
+
+        <p>If the squeeze release coincides with major news (earnings, sector-wide events, RBI policy), price can blow through the upper band and then reverse violently within hours as the news is digested. Mitigation: avoid squeeze entries within 5 trading days of scheduled events. The strategy works best when the directional release is technical, not news-driven.</p>
+
+        <h2>Long-only vs both-directions</h2>
+
+        <p>The pure squeeze indicator works in both directions, but most retail traders should restrict themselves to long-only. Two reasons:</p>
+
+        <ol>
+            <li><strong>Indian shorting constraints:</strong> shorting individual cash equities is operationally limited in Indian retail accounts. F&amp;O can be used but requires understanding of margin, expiry, and additional risks unrelated to the squeeze itself.</li>
+            <li><strong>Asymmetric upside:</strong> equity markets have a structural upward bias over time. Long-only squeeze trades benefit from this bias; short squeezes don&apos;t.</li>
+        </ol>
+
+        <p>For long-only application, add the Stage 2 trend filter from the rule set above &mdash; only take squeeze signals on stocks already in established uptrends. This eliminates roughly half the candidate pool but dramatically improves quality.</p>
+
+        <h2>Adapting for Indian markets</h2>
+
+        <p>Two practical notes for NSE-specific application:</p>
+
+        <h3>1. Volume thresholds</h3>
+
+        <p>Like VCP, the breakout volume requirement should be stricter for Indian midcaps and smallcaps. Use 2x average volume rather than 1.5x. Single large institutional orders can produce false volume spikes in less liquid Indian stocks &mdash; the higher threshold filters these out.</p>
+
+        <h3>2. Earnings clustering</h3>
+
+        <p>NSE earnings cluster in specific weeks each quarter. A stock approaching a squeeze release just before earnings often has unusable risk profiles &mdash; the earnings move dwarfs the technical setup. Either skip such setups entirely, or position-size down significantly.</p>
+
+        <h2>Performance considerations</h2>
+
+        <p>The Bollinger Band Squeeze, when correctly identified and combined with proper directional filters, has historically produced positive expectancy in equity markets. Specific performance depends on the parameter choices, the strictness of the volume filter, and whether long-only or bidirectional application is used.</p>
+
+        <p>One general observation: <strong>squeeze setups tend to be lower-frequency but higher per-trade payoff than other technical strategies.</strong> A typical implementation might generate 15-30 trades per year on a Nifty 500 universe, with hit rates in the 40-50% range and average winners 2-3x average losers. The math depends heavily on actually capturing the explosive moves when they occur &mdash; cutting winners early destroys the strategy&apos;s edge.</p>
+
+        <div class="callout">
+            <strong>A note on parameter validation</strong>
+            Squeeze parameters (lookback periods, deviation multipliers, volume thresholds) interact in complex ways. Small changes can meaningfully shift the signal frequency and hit rate. Before trading any specific squeeze parameter set with real money, run it through Tradosaurus&apos;s backtester on your chosen universe. Squeeze results vary more across parameter sets than most other strategies do.
+        </div>
+
+        <h2>What this means for you</h2>
+
+        <p>Bollinger Band Squeeze gives you a way to participate in the start of new trends &mdash; a market behavior that most other technical strategies miss entirely. It works best as a complement to trend-following and mean-reversion strategies, not as a primary system.</p>
+
+        <p>For most retail swing traders, the right approach is to add squeeze as a third or fourth strategy in a rotation: use TPB and Darvas for steady trend participation, %R for mean-reversion within trends, and squeeze specifically for catching the inflection points where new trends emerge. Each fires on different days, on different stocks, providing genuine diversification within a single account.</p>
+
+        <p>This concludes the Strategy Deep Dives series. The next category &mdash; Risk &amp; Money Management &mdash; covers the unglamorous mechanics that determine whether any of these strategies actually compounds your capital, or just produces expensive activity.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to backtest this strategy on your own data?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

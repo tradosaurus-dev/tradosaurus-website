@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Position sizing for &#8377;1 lakh, &#8377;5 lakh, and &#8377;25 lakh portfolios. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="The position-sizing formula, the 0.5% rule explained, and concrete examples for three real Indian portfolio sizes. The math that determines whether your strategy compounds or your account blows up.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .callout.warn { border-left: 4px solid #C97A1F; }
+        .callout.warn strong { color: #C97A1F; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        .math-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 6px; padding: var(--s-5); margin: var(--s-5) 0; font-family: var(--mono); font-size: 16px; line-height: 1.6; }
+        .math-box .formula { font-size: 17px; color: var(--ink); margin: var(--s-3) 0; padding: var(--s-3); background: var(--paper); border-radius: 4px; text-align: center; font-weight: 500; }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#risk">Risk &amp; Money Management</a>
+        </div>
+        <h1>Position sizing for &#8377;1 lakh, &#8377;5 lakh, and &#8377;25 lakh portfolios.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Beginner</span>
+            <span>11 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>If you only learn one thing about trading risk, learn this: <strong>the size of your position matters more than the quality of your strategy.</strong> A mediocre strategy with disciplined position sizing can compound modest capital for years. A great strategy with reckless position sizing will blow up the same account inside 12 months. The math doesn&apos;t care which strategy you used &mdash; only how much you risked on each trade.</p>
+
+        <p>This article covers the actual math of position sizing. Three real portfolio sizes (&#8377;1 lakh, &#8377;5 lakh, &#8377;25 lakh), three concrete examples, and the honest answer to "how much should I risk per trade." If you can&apos;t answer that question precisely after reading this, do not place real trades.</p>
+
+        <h2>The two rules everything depends on</h2>
+
+        <p>Position sizing is built on two ideas:</p>
+
+        <ol>
+            <li><strong>Risk a fixed percentage of your capital per trade.</strong> Not a fixed rupee amount. Not "as much as I feel good about." A specific percentage you decided in advance, applied mechanically.</li>
+            <li><strong>That percentage determines your position size, given a stop loss.</strong> Not the other way around. You don&apos;t decide "I want to buy 100 shares of TCS." You decide "I&apos;m willing to risk &#8377;X. Given my stop is Y rupees away, how many shares does that imply?"</li>
+        </ol>
+
+        <p>The rest of this article is just consequences of these two rules.</p>
+
+        <h2>The 1% rule, and why most traders should use 0.5%</h2>
+
+        <p>The standard rule taught in trading books is the <strong>1% rule</strong>: risk no more than 1% of total capital on any single trade. The math behind this:</p>
+
+        <p>If you have a 50% win rate strategy with 1.5R average winners, your edge is real but not large. Even disciplined traders with this profile experience losing streaks of 5 to 8 consecutive losses fairly often (statistically, a 50% strategy will produce 8+ consecutive losses several times in any year of trading).</p>
+
+        <p>At 1% risk per trade, eight consecutive losses costs you 8% of capital. Recoverable. Painful, not fatal.</p>
+
+        <p>At 5% risk per trade, eight consecutive losses costs you 40%. To recover from a 40% drawdown, you need to make 67% on what&apos;s left &mdash; and most strategies don&apos;t produce 67% returns on demand. You&apos;re effectively dead money for 18 months.</p>
+
+        <p class="pull-quote">
+            The 1% rule isn&apos;t conservative. It&apos;s the math of staying in the game long enough for your edge to express itself.
+        </p>
+
+        <p>Now here&apos;s the honest version: <strong>most retail traders should use 0.5% per trade, not 1%.</strong> Three reasons:</p>
+
+        <ol>
+            <li><strong>You don&apos;t actually know your edge yet.</strong> The "50% win rate, 1.5R winners" assumes you have a tested, validated strategy with hundreds of historical trades behind it. Most beginners assume the strategy works because the backtest shows it works &mdash; without accounting for slippage, behavioral drift, and regime changes that haven&apos;t happened yet.</li>
+            <li><strong>Indian retail brokerage and tax costs are higher than the U.S. context most position-sizing books assume.</strong> A 0.5% target in India produces similar net-of-cost returns to a 1% target in the U.S. context.</li>
+            <li><strong>Drawdowns are emotionally bigger than the math suggests.</strong> A 20% drawdown in your trading account feels much worse than a 20% drop in your salary. Most traders quit during their first deep drawdown. Lower per-trade risk reduces the depth of these drawdowns and increases the probability you&apos;ll still be trading next year.</li>
+        </ol>
+
+        <p>In what follows, I&apos;ll use 0.5% as the default. Adjust upward to 1% if and only if you have at least 100 verified trades of historical performance, you&apos;ve survived at least one 20%+ drawdown without panic-quitting, and your backtest plus live results agree to within 30%. If those conditions aren&apos;t met, stick with 0.5%.</p>
+
+        <h2>The position-sizing formula</h2>
+
+        <p>The math is one formula. Memorize it:</p>
+
+        <div class="math-box">
+            <div class="formula">
+                Position size (shares) = (Capital &times; Risk %) &divide; (Entry &minus; Stop)
+            </div>
+        </div>
+
+        <p>That&apos;s the entire framework. Three inputs, one output. Let&apos;s walk through what each input means:</p>
+
+        <ul>
+            <li><strong>Capital:</strong> the total amount in your trading account, including cash. Not your net worth. Not your house. Just the trading account.</li>
+            <li><strong>Risk %:</strong> the maximum fraction of capital you&apos;ll lose if the trade hits the stop. Use 0.005 (0.5%) as default.</li>
+            <li><strong>Entry &minus; Stop:</strong> the rupee distance from your entry price to your stop-loss price. This is the per-share loss if the stop is hit.</li>
+        </ul>
+
+        <h2>Three concrete examples</h2>
+
+        <h3>Portfolio 1: &#8377;1 lakh starter account</h3>
+
+        <p>You&apos;re early in your trading journey. You have &#8377;1 lakh saved up to learn swing trading without affecting your finances if it goes wrong.</p>
+
+        <p>Setup: TPB pattern fires on a stock priced at &#8377;500. Your stop is at &#8377;475. Per-share risk is &#8377;25.</p>
+
+        <div class="math-box">
+            <div class="formula">
+                (1,00,000 &times; 0.005) &divide; 25 = 500 &divide; 25 = 20 shares
+            </div>
+        </div>
+
+        <p>You buy 20 shares. Total position cost: 20 &times; &#8377;500 = &#8377;10,000. Maximum risk: 20 &times; &#8377;25 = &#8377;500 (which is 0.5% of &#8377;1 lakh, as designed).</p>
+
+        <p>Now you see the problem at this capital level: <strong>your &#8377;10,000 position is only 10% of your account.</strong> If the stock doubles, you make &#8377;10,000 &mdash; a 10% return on the account. That sounds good, but the brokerage and STT round-trip on a &#8377;10,000 trade in Indian markets is roughly &#8377;30-50 each side, plus 0.025% STT on sale, plus stamp duty. After costs, your meaningful trade activity is small relative to fixed costs.</p>
+
+        <div class="callout warn">
+            <strong>The capital floor problem</strong>
+            At &#8377;1 lakh capital with disciplined position sizing, brokerage and tax overhead eats meaningfully into returns. This is the math behind the recommendation that swing trading needs &#8377;1-3 lakh minimum capital. Below that, you&apos;re either oversizing (risking the account) or undersizing (paying brokerage on tiny gains).
+        </div>
+
+        <p><strong>Practical advice for &#8377;1 lakh accounts:</strong> trade only 4-6 positions per month, not 15-20. Focus on highest-conviction setups. Use a discount broker (Zerodha, Groww, Upstox) with flat brokerage. Track every trade including all costs. Treat year 1 as paid education, not a profit center.</p>
+
+        <h3>Portfolio 2: &#8377;5 lakh active account</h3>
+
+        <p>You&apos;ve been trading for 12-18 months. You have a tested strategy. You have &#8377;5 lakh dedicated to swing trading.</p>
+
+        <p>Setup: Darvas Box breakout on a stock priced at &#8377;800. Stop at &#8377;760. Per-share risk is &#8377;40.</p>
+
+        <div class="math-box">
+            <div class="formula">
+                (5,00,000 &times; 0.005) &divide; 40 = 2,500 &divide; 40 = 62 shares
+            </div>
+        </div>
+
+        <p>You buy 62 shares. Total position cost: 62 &times; &#8377;800 = &#8377;49,600. Maximum risk: 62 &times; &#8377;40 = &#8377;2,480 (~0.5% of capital).</p>
+
+        <p>This position is now ~10% of your account &mdash; meaningful enough that wins matter, small enough that a stopped-out trade is a regular cost of business, not a catastrophe.</p>
+
+        <p><strong>At &#8377;5 lakh, you can run 5-8 simultaneous positions</strong> without overcrowding the account. With 0.5% risk per trade, your maximum total open risk if all stops hit is 2.5-4% &mdash; survivable even if every position goes against you simultaneously.</p>
+
+        <h3>Portfolio 3: &#8377;25 lakh serious account</h3>
+
+        <p>Multiple years of experience. Validated strategy. &#8377;25 lakh allocated to active swing trading.</p>
+
+        <p>Setup: VCP breakout on a stock priced at &#8377;2,400. Stop at &#8377;2,290. Per-share risk is &#8377;110.</p>
+
+        <div class="math-box">
+            <div class="formula">
+                (25,00,000 &times; 0.005) &divide; 110 = 12,500 &divide; 110 = 113 shares
+            </div>
+        </div>
+
+        <p>You buy 113 shares. Total position cost: 113 &times; &#8377;2,400 = &#8377;2,71,200. Maximum risk: 113 &times; &#8377;110 = &#8377;12,430 (~0.5% of capital).</p>
+
+        <p>The position is ~11% of capital. With 8-12 simultaneous positions, your account is well-diversified. Total open risk if all stops hit: ~5-6% &mdash; still recoverable in a single bad month.</p>
+
+        <p><strong>At &#8377;25 lakh, you can comfortably run 8-15 simultaneous positions across multiple strategies.</strong> This is the capital level where running TPB + Darvas + VCP + Williams %R simultaneously starts being meaningful &mdash; you have enough capital that each strategy gets a real allocation, and enough trades that statistical edge has time to express itself.</p>
+
+        <h2>The three mistakes that destroy position sizing</h2>
+
+        <h3>Mistake 1: Ignoring stop distance</h3>
+
+        <p>A common error: "I want to buy 100 shares of TCS, my account can afford it." This ignores the stop distance. If TCS is at &#8377;3,800 and your stop is at &#8377;3,500, your per-share risk is &#8377;300. Buying 100 shares means risking &#8377;30,000 &mdash; which is 6% of a &#8377;5 lakh account, far above the 0.5% target.</p>
+
+        <p>The stop distance, not the share count, must drive the position size. A wide stop means fewer shares. A tight stop means more shares. The risk percentage stays constant.</p>
+
+        <h3>Mistake 2: "Averaging down"</h3>
+
+        <p>The trade goes against you. You think "the stock is even cheaper now, I&apos;ll buy more." Adding to a losing position turns a 0.5% planned loss into a 1.5% or 2% actual loss. Over time, this destroys disciplined position sizing.</p>
+
+        <p>The disciplined version: when a trade hits its stop, you&apos;re out. If a new setup forms later, you can re-enter as a new trade with fresh sizing math &mdash; but never add to an existing loser.</p>
+
+        <h3>Mistake 3: Using leverage to "fix" small accounts</h3>
+
+        <p>"I have &#8377;50,000 but my broker offers 5x intraday margin, so I can take &#8377;2.5 lakh positions." This isn&apos;t fixing the capital problem; it&apos;s amplifying every loss by 5x. A 5% adverse move &mdash; routine in markets &mdash; destroys the entire account.</p>
+
+        <p>If your capital is too small for swing trading at honest position sizes, the answer is to build the capital base first, not to use leverage to simulate having more.</p>
+
+        <h2>Multiple positions: the correlation question</h2>
+
+        <p>If you have 5 open positions, each at 0.5% risk, your total open risk is 2.5% &mdash; assuming positions are uncorrelated. But if all 5 positions are in the same sector (say, banking stocks during an RBI policy week), they tend to move together. A bad sector day can hit all 5 stops simultaneously.</p>
+
+        <p>Practical rule: <strong>treat positions in the same sector as roughly half-correlated.</strong> Five banking stocks at 0.5% each behave more like 2.5% on a single trade than 0.5% &times; 5 = 2.5% spread evenly. Adjust by reducing per-position risk when you have sector concentration, or by capping the number of positions per sector.</p>
+
+        <p>A simple sector concentration rule: <strong>maximum 2-3 simultaneous positions in any single sector.</strong> If 4 banking stocks all give buy signals at once, take the strongest 2-3 and pass on the others.</p>
+
+        <h2>What this means for you</h2>
+
+        <p>Position sizing is the most boring topic in trading and the most important. You can have a brilliant strategy and lose money. You cannot have disciplined position sizing and blow up an account &mdash; the math literally prevents it.</p>
+
+        <p>Take the position-sizing formula, write it down, tape it to your monitor. Before every trade, calculate three numbers: capital, risk %, stop distance. Do the division. Buy that exact number of shares. No "rounding up because it feels right." No "this one looks special, let me size up." Mechanical execution.</p>
+
+        <p>The next article in this series goes deeper on the stop-loss side of the equation: how to place stops that survive normal volatility but exit when the trade thesis is wrong. Stop placement is the other half of the position-sizing equation &mdash; the formula assumes you know where your stop is, and bad stops destroy good sizing.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to test your risk math on real backtests?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

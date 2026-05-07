@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why your stop loss is the most important number you set. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="Stop-loss placement explained: ATR-based stops, structural levels, why most retail traders set stops too tight, and the math of risk:reward ratios that separates winning strategies from losing ones.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .callout.warn { border-left: 4px solid #C97A1F; }
+        .callout.warn strong { color: #C97A1F; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        .math-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 6px; padding: var(--s-5); margin: var(--s-5) 0; font-family: var(--mono); font-size: 16px; line-height: 1.6; }
+        .math-box .formula { font-size: 17px; color: var(--ink); margin: var(--s-3) 0; padding: var(--s-3); background: var(--paper); border-radius: 4px; text-align: center; font-weight: 500; }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#risk">Risk &amp; Money Management</a>
+        </div>
+        <h1>Why your stop loss is the most important number you set.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Intermediate</span>
+            <span>13 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>Most retail traders set stops too tight. They place a stop 2% below entry because that &quot;feels safe,&quot; and then they get stopped out repeatedly by normal market noise &mdash; the kind of intraday swings that happen in any liquid stock on any given day. Each stop-out is a small loss. Twenty stop-outs in a row is a destroyed account. The strategy never had a chance to express its edge because the stops were placed in the noise zone instead of the signal zone.</p>
+
+        <p>Stop loss placement is not arbitrary. There is correct math for where stops belong, and there is incorrect math. The correct math has two parts: the stop must be far enough away to survive normal volatility in the stock you&apos;re trading, AND close enough to keep your risk-per-trade reasonable. These two requirements pull in opposite directions, and your job as a trader is to find the right balance for each setup.</p>
+
+        <h2>What a stop loss actually does</h2>
+
+        <p>A stop loss is not "the amount I&apos;m willing to lose." It is a price level that, if reached, indicates your trade thesis was wrong. The two definitions sound similar but produce dramatically different stops.</p>
+
+        <p>The first definition (loss tolerance) leads to arbitrary stops based on emotion. "I don&apos;t want to lose more than &#8377;3,000, so I&apos;ll set my stop &#8377;3,000 below entry." This places the stop wherever the rupee math happens to land &mdash; which has no relationship to the underlying chart structure or the stock&apos;s normal volatility.</p>
+
+        <p>The second definition (thesis invalidation) leads to stops that are tied to chart structure. "If price goes back below the pullback low, my entry rationale is wrong. So my stop is at the pullback low." The stop comes from the strategy logic, not from your personal pain tolerance.</p>
+
+        <p class="pull-quote">
+            A stop loss should answer the question &quot;at what price would I be wrong?&quot; If you can&apos;t answer that question without referencing your own emotions, you don&apos;t have a real stop &mdash; you have a panic level.
+        </p>
+
+        <p>The correct sequence is always: <strong>identify the stop based on chart structure first, then size the position to fit your risk budget.</strong> Never the reverse. If the implied stop is too far away to size sensibly, the trade itself is wrong &mdash; pass on it.</p>
+
+        <h2>The risk:reward ratio, properly understood</h2>
+
+        <p>Every trade has two key numbers:</p>
+
+        <ul>
+            <li><strong>R</strong> &mdash; the rupee distance from entry to stop (your initial risk)</li>
+            <li><strong>Target distance</strong> &mdash; the rupee distance from entry to your profit target (your potential reward)</li>
+        </ul>
+
+        <p>The ratio of these two numbers is your risk:reward. A trade with target distance equal to 2x your risk distance is a "1:2 R:R" or "2R" trade. A trade where target equals risk is "1:1 R:R" or "1R."</p>
+
+        <p>The math behind why R:R matters:</p>
+
+        <div class="math-box">
+            <div class="formula">Expectancy = (Win Rate &times; Average Win) &minus; (Loss Rate &times; Average Loss)</div>
+        </div>
+
+        <p>If your strategy wins 50% of the time at 1R and loses 50% of the time at 1R, expectancy is exactly zero. You&apos;re break-even before costs. Add brokerage and taxes, you&apos;re losing money.</p>
+
+        <p>If your strategy wins 50% of the time at 2R and loses 50% of the time at 1R, expectancy is 0.5R per trade. Over hundreds of trades, this compounds.</p>
+
+        <p>If your strategy wins 40% of the time at 2R and loses 60% of the time at 1R, expectancy is still positive (+0.2R per trade). This is the structure of most good trend-following strategies &mdash; they&apos;re wrong slightly more than half the time, but their winners are larger than their losers.</p>
+
+        <h2>Why most retail traders set stops too tight</h2>
+
+        <p>Three reasons, all behavioral:</p>
+
+        <h3>1. Tight stops "feel" safe</h3>
+
+        <p>A 1% stop sounds prudent. "I&apos;ll only lose 1% if I&apos;m wrong." But the actual question isn&apos;t how small the rupee loss is &mdash; it&apos;s whether the stop is placed at a level that has any relationship to whether the trade thesis is correct. A 1% stop in a stock with 3% daily volatility will be hit by routine intraday noise, regardless of whether the underlying setup was valid.</p>
+
+        <h3>2. Tight stops let you "trade more"</h3>
+
+        <p>With a 1% stop, you can size larger positions and feel like you&apos;re doing more meaningful trading. The flaw: with stops in the noise zone, your hit rate collapses. You take 50 trades, get stopped on 35 of them by random fluctuations, and the strategy never gets a chance to demonstrate edge.</p>
+
+        <h3>3. Tight stops avoid the discomfort of seeing the trade go against you</h3>
+
+        <p>A wider stop means a longer time during which you&apos;re &quot;losing.&quot; A tight stop closes that pain quickly. But trading is not about minimizing the duration of discomfort &mdash; it&apos;s about maximizing expectancy over many trades. A trade that pulls back 4% before resolving up 12% is a winning trade, but only if your stop survived the 4% pullback.</p>
+
+        <h2>The ATR-based stop &mdash; the right way to do it</h2>
+
+        <p>Average True Range (ATR) is a volatility indicator. It measures the average daily price range over a lookback period (typically 14 days). A stock with high ATR moves a lot each day; a stock with low ATR moves little.</p>
+
+        <p>The principle behind ATR-based stops: <strong>your stop should be wide enough to survive normal daily volatility for the specific stock you&apos;re trading.</strong> A blue-chip with ATR of 1% needs a much tighter stop than a midcap with ATR of 3%.</p>
+
+        <p>The standard formula:</p>
+
+        <div class="math-box">
+            <div class="formula">Stop price = Entry &minus; (ATR &times; Multiplier)</div>
+        </div>
+
+        <p>Common multiplier values:</p>
+
+        <ul>
+            <li><strong>1.5x ATR</strong> &mdash; tight stop, suitable only for very mean-reverting setups in low-volatility stocks. High stop-out frequency. Use sparingly.</li>
+            <li><strong>2x ATR</strong> &mdash; standard stop for most swing trading setups in liquid Indian stocks. Survives most routine volatility while keeping risk reasonable.</li>
+            <li><strong>2.5-3x ATR</strong> &mdash; wider stop for trend-following strategies (Darvas Box, VCP). Lower stop-out frequency, lets winners breathe through pullbacks.</li>
+            <li><strong>4x ATR or more</strong> &mdash; very wide; usually only appropriate for long-duration trend-following on weekly charts.</li>
+        </ul>
+
+        <p>Concrete example. You&apos;re entering a TPB trade on a stock at &#8377;1,200. Its 14-day ATR is &#8377;30 (i.e., the stock typically moves &#8377;30 per day). Using a 2x ATR stop:</p>
+
+        <div class="math-box">
+            <div class="formula">Stop = 1,200 &minus; (30 &times; 2) = 1,200 &minus; 60 = &#8377;1,140</div>
+        </div>
+
+        <p>Your per-share risk is &#8377;60. Now apply the position-sizing formula from the previous article:</p>
+
+        <div class="math-box">
+            <div class="formula">(Capital &times; 0.005) &divide; 60 = position size in shares</div>
+        </div>
+
+        <p>This is the disciplined sequence: stop based on volatility (chart structure), then position size based on stop. Never the reverse.</p>
+
+        <h2>Combining ATR with structure</h2>
+
+        <p>The cleanest stops use both ATR (for volatility context) and structural levels (for thesis-invalidation). The rule: <strong>place your stop at the worse of the two values.</strong></p>
+
+        <p>Example: ATR-based stop says &#8377;1,140. The recent pullback low (the structural level) is at &#8377;1,135. Use &#8377;1,135 (the wider/lower stop) &mdash; the structural level is the more conservative invalidation point. If price goes below &#8377;1,135, the pullback structure has actually broken, not just normal noise.</p>
+
+        <p>Reverse case: ATR says &#8377;1,140. Structural low is &#8377;1,160 (closer to entry). Now you have a problem &mdash; the structural level isn&apos;t far enough away to absorb normal volatility. Two options:</p>
+        <ol>
+            <li>Use the wider ATR stop and accept the structural level isn&apos;t the actual invalidation</li>
+            <li>Pass on the trade &mdash; the entry timing isn&apos;t favorable</li>
+        </ol>
+
+        <p>The second option is usually correct. If the structural stop is too tight, your entry was likely too late in the move.</p>
+
+        <h2>Three stop-loss mistakes to avoid</h2>
+
+        <h3>Mistake 1: The mental stop</h3>
+
+        <p>"I&apos;ll watch the trade and exit if it goes against me." This sounds disciplined; it isn&apos;t. Mental stops fail because:</p>
+        <ul>
+            <li>You won&apos;t be at the screen when the stop level is hit</li>
+            <li>Even when you are, the act of clicking sell at a loss is psychologically harder than seeing a stop trigger automatically</li>
+            <li>Mental stops drift &mdash; "well, it&apos;s only 0.1% past my stop, let me give it one more day"</li>
+        </ul>
+        <p>Always place actual stop orders with your broker. The discomfort of executing a manual stop is exactly the discomfort that will cause you to miss the right exit.</p>
+
+        <h3>Mistake 2: Moving the stop further away</h3>
+
+        <p>The trade goes against you. The stop is about to trigger. You move the stop down by another 1-2% to "give it some room." This is the worst possible action. You&apos;ve transformed a controlled 0.5% loss into an uncontrolled larger loss, and you&apos;ve broken the discipline that makes the strategy work over time.</p>
+
+        <p>The disciplined version: stops only move in one direction &mdash; toward you (tighter), as the trade goes in your favor. They never move away from you (looser).</p>
+
+        <h3>Mistake 3: Using percentage stops without volatility context</h3>
+
+        <p>"I always use a 5% stop." A flat 5% stop ignores that different stocks have wildly different volatility profiles. 5% might be reasonable on Reliance (low daily volatility) and absurdly tight on a midcap with 3-4% daily ATR. The same percentage stop produces completely different risk profiles depending on the stock.</p>
+
+        <p>Use ATR-based or structure-based stops &mdash; both adapt to the specific stock you&apos;re trading. Percentage stops should only be used as a sanity-check ceiling (e.g., "never wider than 8% even if ATR suggests it"), not as the primary method.</p>
+
+        <h2>Trailing stops &mdash; the part most traders skip</h2>
+
+        <p>The initial stop is only half the story. Once a trade moves in your favor, the stop should move with it (trail) to protect profits. Without trailing stops, winners that turn back into losers are demoralizing &mdash; you watch a trade go from +10% to -2% and feel like the strategy doesn&apos;t work.</p>
+
+        <p>Common trailing methods:</p>
+
+        <ul>
+            <li><strong>Move to break-even at +1R.</strong> When the trade is up an amount equal to your initial risk, move the stop to your entry price. Worst case from this point is a scratch trade. Simple and effective.</li>
+            <li><strong>Chandelier stop.</strong> Trail the stop at (highest high since entry) &minus; (3 &times; ATR). The stop ratchets up as new highs are made, never down.</li>
+            <li><strong>Moving-average stop.</strong> Exit when price closes below a chosen MA (10-day, 20-day, or 50-day depending on trade duration). Mechanical and matches the time scale of the trade.</li>
+            <li><strong>Box-based stop.</strong> For Darvas-style trades, raise the stop to just below each newly confirmed box bottom.</li>
+        </ul>
+
+        <p>The right trailing method depends on the strategy. Mean-reversion trades (short duration) shouldn&apos;t use slow trails. Trend-following trades (long duration) need slow trails to avoid getting shaken out by routine pullbacks.</p>
+
+        <div class="callout">
+            <strong>The "give back" tax</strong>
+            Trailing stops will systematically exit you below the actual peak of the trade. If a stock peaks at +20% and you trail with 3x ATR (about 5%), you&apos;ll exit around +15%. That 5% giveback feels like loss but is actually the cost of letting winners run. Tighter trails reduce giveback but also reduce average winner size &mdash; you&apos;re trading off two things, not optimizing one. Most traders systematically over-tighten trails to feel "safer," which costs more in lost upside than it saves.
+        </div>
+
+        <h2>What this means for you</h2>
+
+        <p>If you take three things from this article, take these:</p>
+
+        <ol>
+            <li><strong>Stops belong in the signal zone, not the noise zone.</strong> Use 2-3x ATR for swing trades. Verify against the structural level. Take the wider of the two.</li>
+            <li><strong>Stop placement determines position size, not the other way around.</strong> Calculate the stop first, then size the position to fit your risk budget. Never reverse the order.</li>
+            <li><strong>Use actual stop orders, not mental stops.</strong> The friction of manual exits is exactly the friction that causes traders to skip exits.</li>
+        </ol>
+
+        <p>Combined with the position-sizing math from the previous article, you now have the two pieces that determine 80% of trading outcomes. Strategy choice matters, but disciplined risk math matters more &mdash; a mediocre strategy with proper risk management outlasts a great strategy with sloppy risk management every single time.</p>
+
+        <p>The next article tackles the most psychologically difficult risk topic: maximum drawdown. Even strategies with positive expectancy go through extended losing periods, and the math of recovering from drawdowns is harsher than most traders realize before they&apos;re in one.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to test your risk math on real backtests?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

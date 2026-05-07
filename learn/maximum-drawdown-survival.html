@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding maximum drawdown (and surviving 30%+). &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="What MDD really measures, the brutal recovery math, and how to psychologically prepare for the inevitable losing streaks every strategy goes through. The honest version of drawdown survival.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .callout.warn { border-left: 4px solid #C97A1F; }
+        .callout.warn strong { color: #C97A1F; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        .math-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 6px; padding: var(--s-5); margin: var(--s-5) 0; font-family: var(--mono); font-size: 16px; line-height: 1.6; }
+        .math-box .formula { font-size: 17px; color: var(--ink); margin: var(--s-3) 0; padding: var(--s-3); background: var(--paper); border-radius: 4px; text-align: center; font-weight: 500; }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#risk">Risk &amp; Money Management</a>
+        </div>
+        <h1>Understanding maximum drawdown (and surviving 30%+).</h1>
+        <div class="article-meta">
+            <span class="difficulty">Intermediate</span>
+            <span>16 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>Show a beginner trader a backtest result that says &quot;CAGR 18%, max drawdown 32%&quot; and they will, almost without exception, focus on the 18% and ignore the 32%. They&apos;ll calculate compound returns. They&apos;ll plan how much they&apos;ll have in 5 years. They will not seriously imagine what 32% drawdown actually feels like, and they will be unprepared when it arrives.</p>
+
+        <p>This article is about the part of trading that&apos;s genuinely hard &mdash; not the strategy logic, not the position sizing math, but the psychological reality of sitting through a losing streak that you logically know will eventually end, while every fiber of your being is screaming that you should quit. Most traders fail here. Not at strategy selection, not at execution, but at drawdown survival.</p>
+
+        <h2>What maximum drawdown actually measures</h2>
+
+        <p>Maximum drawdown (MDD) is the largest peak-to-trough decline in your equity curve, measured in percentage terms. If your account hit a peak of &#8377;10 lakh, then declined to &#8377;7 lakh before recovering, your drawdown during that period was 30%. The "maximum" qualifier means we&apos;re looking at the worst such decline in your trading history.</p>
+
+        <p>Three things to understand about how MDD is calculated:</p>
+
+        <ul>
+            <li><strong>It&apos;s measured peak-to-trough, not from the original starting capital.</strong> If you started with &#8377;10 lakh, grew to &#8377;15 lakh, then declined to &#8377;10.5 lakh, your drawdown was 30% (from the &#8377;15 lakh peak), not 0% (because you&apos;re still ahead of starting capital).</li>
+            <li><strong>It&apos;s measured at any point during the period, not just at year-end.</strong> A strategy that ends the year flat but went through a 25% intra-year drawdown is meaningfully different from one that grinded sideways with 5% volatility.</li>
+            <li><strong>It&apos;s a historical observation, not a hard ceiling.</strong> A strategy that has historically maxed out at 25% drawdown could go to 35% next year. Past MDD is the floor for what you should expect, not the ceiling.</li>
+        </ul>
+
+        <h2>The recovery math is brutal</h2>
+
+        <p>Most traders underestimate how hard it is to recover from a drawdown. The math is asymmetric in a punishing way:</p>
+
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>Drawdown</th>
+                    <th>Required gain to recover</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>10%</td><td>11.1%</td></tr>
+                <tr><td>20%</td><td>25.0%</td></tr>
+                <tr><td>30%</td><td>42.9%</td></tr>
+                <tr><td>40%</td><td>66.7%</td></tr>
+                <tr><td>50%</td><td>100.0%</td></tr>
+                <tr><td>60%</td><td>150.0%</td></tr>
+                <tr><td>70%</td><td>233.0%</td></tr>
+            </tbody>
+        </table>
+
+        <p>If your account drops 50%, you don&apos;t need a 50% gain to be whole &mdash; you need a 100% gain. If your typical strategy makes 15-18% per year in good conditions, recovering from a 50% drawdown takes 4-5 years of solid performance. That&apos;s not a hypothetical &mdash; that&apos;s the actual math.</p>
+
+        <p class="pull-quote">
+            A 50% drawdown is not "twice as bad" as a 25% drawdown. It is roughly four times as bad, because the recovery takes four times as long.
+        </p>
+
+        <p>This is why position-sizing discipline matters so much. The difference between a strategy with 25% MDD and one with 50% MDD &mdash; even if both have the same CAGR &mdash; is the difference between recovery in 18 months and recovery in 5 years. The strategy with the smaller drawdown is dramatically better, even at the same return.</p>
+
+        <h2>What "I&apos;d never sit through that" actually means</h2>
+
+        <p>When a beginner sees a backtest with 30% drawdown and says &quot;I&apos;d cut losses sooner; I&apos;d never sit through 30%&quot;, they&apos;re saying one of two things:</p>
+
+        <ol>
+            <li><strong>"I&apos;d use a different strategy with smaller drawdowns."</strong> This is theoretically valid but practically harder than it sounds. Strategies with very small drawdowns generally have very small returns &mdash; the two go together. A strategy that limits MDD to 8% by definition can&apos;t produce 25% CAGR; the math doesn&apos;t allow it.</li>
+            <li><strong>"I&apos;d abandon the strategy partway through the drawdown."</strong> This is what they actually mean, and it&apos;s the worst possible thing to do. Abandoning a strategy mid-drawdown locks in the loss and prevents the recovery. The strategy&apos;s positive expectancy comes precisely from sitting through these periods until the math reverts.</li>
+        </ol>
+
+        <p>The genuinely difficult truth: <strong>backtests show drawdowns recovered. Real-life drawdowns often don&apos;t recover &mdash; not because the strategy stopped working, but because the trader stopped following the strategy.</strong></p>
+
+        <h2>The anatomy of a real drawdown</h2>
+
+        <p>Backtest drawdowns are summarized as numbers. Real drawdowns happen over weeks or months and feel very different than the numbers suggest. Here&apos;s what a typical 30% drawdown actually looks like as you live through it:</p>
+
+        <p><strong>Week 1-2:</strong> A few trades go against you. You&apos;re down 4-5%. This feels normal. Strategies have losing streaks. You stick with the system.</p>
+
+        <p><strong>Week 3-4:</strong> More losses. You&apos;re down 10-12%. You start questioning whether the strategy is broken or whether the market regime has changed. You read articles about other traders quitting. You start considering whether to sit out the next few signals.</p>
+
+        <p><strong>Week 5-7:</strong> Down 18-22%. You&apos;ve had a losing streak that doesn&apos;t feel like noise anymore &mdash; it feels like the strategy stopped working. Friends ask how trading is going and you avoid the question. You begin to skip signals that "feel wrong" and end up missing the trades that would have started the recovery.</p>
+
+        <p><strong>Week 8-10:</strong> Down 28-30%. This is the bottom &mdash; though you don&apos;t know that yet. You have completely lost confidence in the system. You either quit entirely (locking in the loss) or you keep trading but with smaller size and worse discipline (guaranteeing slower recovery).</p>
+
+        <p><strong>Week 11+:</strong> If you stuck with the system and continued taking signals, the strategy starts working again. The math reverts. Recovery is slow but begins. If you abandoned the system, you watch your old strategy work for everyone else and feel betrayed.</p>
+
+        <p>Notice the killing blow: <strong>traders almost always abandon their strategy at the moment of maximum drawdown &mdash; precisely when staying with it would have produced the recovery.</strong> The behavioral mistake compounds the strategic outcome.</p>
+
+        <h2>Why drawdowns happen even to good strategies</h2>
+
+        <p>The mathematical reason is simple: any strategy with a hit rate below 100% (which is every strategy) will have losing streaks. The probability of a losing streak of length N is roughly the loss rate raised to the power N.</p>
+
+        <p>A 50% win rate strategy has a 1-in-32 chance of 5 consecutive losses, a 1-in-1024 chance of 10 consecutive losses. Across hundreds of trades over multiple years, you will hit these streaks. Mathematically, they are not rare events &mdash; they are statistically guaranteed events.</p>
+
+        <p>The behavioral reason adds another layer. Markets go through regime changes. A trend-following strategy that works in 2018-2021 may struggle during a sideways 2022. The strategy isn&apos;t broken &mdash; the regime is wrong for it. When the regime changes back, the strategy returns to producing positive expectancy.</p>
+
+        <p>A trader who quits during the regime shift never sees the recovery. A trader who stays through it sees the system come back to life. Which trader you become is determined more by your psychological preparation than by your strategy choice.</p>
+
+        <h2>How to prepare for drawdowns before they happen</h2>
+
+        <p>Three concrete preparations make the difference:</p>
+
+        <h3>1. Know your strategy&apos;s historical drawdown profile cold</h3>
+
+        <p>Before risking real capital, run extensive backtests that surface every drawdown the strategy has historically experienced. Don&apos;t just look at the maximum &mdash; look at the distribution. How many 10%+ drawdowns? How many 20%+? How long did each take to recover? When you live through your first 15% drawdown, you should be able to think "yes, this happens 2-3 times per year historically; recovery typically takes 4-6 weeks" rather than "the strategy is broken."</p>
+
+        <h3>2. Plan the drawdown response in advance</h3>
+
+        <p>Decide before you start trading: at what drawdown level will you reduce position size? At what level will you pause trading entirely? The answers should be set well before any drawdown occurs, when your judgment is clear. Common framework: reduce risk per trade by half if drawdown exceeds your historical 90th percentile. Pause new entries if drawdown exceeds 1.5x your historical maximum.</p>
+
+        <p>Critically: <strong>"reduce risk" is not the same as "abandon the strategy."</strong> You keep taking signals, just at half size. This preserves the ability to participate in the recovery while limiting further damage if the regime shift turns out to be permanent.</p>
+
+        <h3>3. Pre-commit to the recovery period</h3>
+
+        <p>Mentally, write yourself a contract before starting: "I will not change strategies, abandon the system, or quit trading until I have given the current strategy at least 18 months and 100 trades to demonstrate edge." Then keep the contract during the inevitable drawdown periods.</p>
+
+        <p>Without this pre-commitment, mid-drawdown you&apos;ll be making decisions about strategy abandonment under conditions of fear and self-doubt &mdash; the worst conditions for sound judgment. The pre-commitment lets your better-thinking earlier-self protect your worse-thinking drawdown-self.</p>
+
+        <h2>The portfolio-level drawdown calculation</h2>
+
+        <p>Individual strategy drawdowns are one thing. Portfolio drawdowns are another. If you run multiple strategies (TPB + Darvas + VCP simultaneously), your portfolio MDD is generally <em>smaller</em> than the worst-case MDD of any single strategy &mdash; because the strategies don&apos;t hit their peak drawdowns at the same time.</p>
+
+        <p>This is the diversification benefit. Strategy A might have 25% MDD, Strategy B might have 28%, but a 50/50 portfolio of both might have 18% MDD because their bad periods don&apos;t fully overlap.</p>
+
+        <p>However, this benefit is smaller than most traders expect. All trend-following strategies tend to suffer during the same kinds of market regimes (sideways/choppy markets). Running TPB + Darvas + VCP gives you some diversification, but they all hate the same conditions. The diversification benefit is much larger when you mix structurally different strategies (trend-following + mean-reversion), because they&apos;re hurt by different market conditions.</p>
+
+        <h2>Drawdowns and capital allocation</h2>
+
+        <p>One implication that most retail traders miss: <strong>the maximum drawdown of your strategy should determine how much of your total wealth goes into trading capital, not the other way around.</strong></p>
+
+        <p>If your strategy has historical 35% MDD and your total available wealth is &#8377;30 lakh, allocating &#8377;30 lakh to trading capital means you should expect, in your worst historical year, to see your &#8377;30 lakh become &#8377;19.5 lakh. If you&apos;d be unable to function (financially or psychologically) at &#8377;19.5 lakh, you allocated too much.</p>
+
+        <p>The honest framing: trading capital should be money you can lose 40% of without it changing your life. If &#8377;5 lakh going to &#8377;3 lakh would force you to skip your kid&apos;s school fees, &#8377;5 lakh is too much trading capital. Allocate less. Build the strategy track record on smaller capital first, then scale up only when you&apos;ve survived a real drawdown without panic.</p>
+
+        <h2>What this means for you</h2>
+
+        <p>The single highest-leverage mental adjustment for a developing trader is to internalize that drawdowns are normal, mathematically required features of trading &mdash; not signs of strategy failure. Until you genuinely believe this in your bones, you will keep abandoning strategies at exactly the wrong moments.</p>
+
+        <p>The path: trade smaller than you think you should. Run multiple uncorrelated strategies. Pre-commit to 18-month minimum holding periods. Track your drawdowns alongside your returns. When you hit a drawdown, look up the historical distribution and recognize where you are in the cycle. Reduce size if you must, but stay engaged. The recoveries come; you just have to be there when they do.</p>
+
+        <p>The next article tackles the most mathematically tempting risk concept of all: the Kelly Criterion, which claims to tell you the optimal bet size for any positive-expectancy strategy. The math is beautiful. The practical application is where retail traders get destroyed. We&apos;ll cover both honestly.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to test your risk math on real backtests?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

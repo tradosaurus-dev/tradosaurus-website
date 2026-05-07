@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Pullback Breakout (TPB), explained. &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="The TPB swing trading strategy from first principles: why pullbacks in trending stocks beat breakout buying, the exact entry and exit rules, and the failure modes you should expect.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        /* Rules box — used for entry/exit rules */
+        .rules-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-left: 4px solid var(--accent); border-radius: 4px; padding: var(--s-5); margin: var(--s-5) 0; }
+        .rules-box h4 { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 var(--s-3) 0; font-weight: 600; }
+        .rules-box ol, .rules-box ul { margin: 0; padding-left: var(--s-5); font-size: 16px; }
+        .rules-box li { margin-bottom: var(--s-2); }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#strategies">Strategy Deep Dives</a>
+        </div>
+        <h1>Trend Pullback Breakout (TPB), explained.</h1>
+        <div class="article-meta">
+            <span class="difficulty">Intermediate</span>
+            <span>18 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>Most retail traders learn breakouts first. The pattern is intuitive: a stock pushes through resistance on volume, you buy. Sometimes it works spectacularly &mdash; the kind of trade that lights up Twitter. More often, it doesn&apos;t: the breakout fails within days, you&apos;re stopped out, and you wonder what you did wrong.</p>
+
+        <p>The Trend Pullback Breakout (TPB) strategy starts from a different premise. <strong>Don&apos;t buy strength at the highs. Buy weakness in stocks that are already strong.</strong> Wait for a trending stock to pull back, then enter on the resumption. The math behind why this works is one of the most consistent edges in technical trading &mdash; not because pullbacks are magical, but because they filter out the false breakouts that destroy buy-the-breakout strategies.</p>
+
+        <h2>The core insight: pullbacks beat breakouts</h2>
+
+        <p>A breakout is a stock making a new high after consolidation. A pullback is a stock that has already broken out, advanced for some time, and is now retracing toward a moving average or prior support level. Both can lead to further upside. But they have very different reliability profiles.</p>
+
+        <p>Consider what each setup demands of the buyer:</p>
+
+        <ul>
+            <li><strong>Breakout buyer</strong> says: "Resistance has been broken; the stock is at a new high; I expect it to keep going." This requires the stock to do something it hasn&apos;t yet done &mdash; sustain above a level it has rejected before.</li>
+            <li><strong>Pullback buyer</strong> says: "The stock has already proven it can advance. It&apos;s now temporarily weak. I expect the trend to resume." This requires the stock to do something it has <em>already done</em> &mdash; resume an existing trend after a pause.</li>
+        </ul>
+
+        <p>The pullback buyer asks less of the market. That&apos;s why pullback strategies, on average, have higher hit rates than naive breakout strategies. <strong>You&apos;re betting on continuation, not reversal &mdash; and continuation is the higher-probability outcome at every timescale.</strong></p>
+
+        <p class="pull-quote">
+            The breakout trader buys at the moment of maximum visibility. The pullback trader buys at the moment of maximum doubt. The market pays the second one more often.
+        </p>
+
+        <h2>What TPB actually is</h2>
+
+        <p>TPB &mdash; Trend Pullback Breakout &mdash; combines three filters:</p>
+
+        <ol>
+            <li><strong>Trend filter:</strong> the stock must be in a confirmed uptrend (Stage 2). This is non-negotiable. Pullbacks in downtrending stocks are not the same setup &mdash; they&apos;re continuation patterns to the downside.</li>
+            <li><strong>Pullback condition:</strong> price has retraced from a recent swing high to a defined zone &mdash; usually a moving average or a Fibonacci retracement level. The pullback indicates that short-term traders have taken profits without changing the larger trend.</li>
+            <li><strong>Breakout trigger:</strong> after the pullback completes, price breaks out above a near-term resistance &mdash; typically the previous day&apos;s high or a small consolidation high. This is the entry signal.</li>
+        </ol>
+
+        <p>Notice the strategy isn&apos;t "buy any pullback." It&apos;s "buy a pullback that has confirmed by breaking out of its own short-term consolidation." The breakout trigger filters out pullbacks that are turning into deeper declines.</p>
+
+        <h2>The full rule set</h2>
+
+        <p>Here&apos;s a typical TPB setup, written precisely. Tradosaurus implements variants that are tighter or looser than this baseline, but the core logic is identical.</p>
+
+        <div class="rules-box">
+            <h4>TPB Entry Rules</h4>
+            <ol>
+                <li><strong>Trend qualification:</strong> stock&apos;s closing price is above its 50-day SMA, and the 50-day SMA is above the 200-day SMA. Both moving averages are sloping up over the past 20 days.</li>
+                <li><strong>Pullback identification:</strong> price has declined for 3 to 8 trading days from a recent swing high, and now sits within 1-2% of the 20-day or 50-day SMA.</li>
+                <li><strong>Pullback depth check:</strong> the pullback should not exceed 38.2% retracement of the prior swing &mdash; deeper retracements are warning signs.</li>
+                <li><strong>Volume context:</strong> volume during the pullback should be lower than volume during the prior advance. Heavy volume on a pullback often signals real distribution rather than profit-taking.</li>
+                <li><strong>Entry trigger:</strong> price closes above the high of the previous trading day, with above-average volume. This is the buy.</li>
+            </ol>
+        </div>
+
+        <div class="rules-box">
+            <h4>TPB Exit Rules</h4>
+            <ol>
+                <li><strong>Initial stop loss:</strong> placed below the recent pullback low. If price re-enters the pullback zone, the setup has failed.</li>
+                <li><strong>Trailing stop:</strong> once price has moved 1.5x the initial risk (1.5R) in your favor, raise the stop to break-even. From there, trail by chandelier exit (e.g., highest high of last 7 days minus 2 ATR).</li>
+                <li><strong>Time stop:</strong> if the trade hasn&apos;t reached 1R in 10 trading days, close it. Most TPB winners move quickly &mdash; trades that stall rarely recover meaningfully.</li>
+                <li><strong>Target:</strong> first profit target at 2R (twice your risk). Optional second target at 3-4R for the runner portion.</li>
+            </ol>
+        </div>
+
+        <h2>Why the trend filter is everything</h2>
+
+        <p>The single biggest failure mode of pullback strategies is applying them to non-trending stocks. A stock chopping sideways generates dozens of "pullbacks" that go nowhere &mdash; you&apos;ll get filled, hit your stop, get filled again, hit your stop again, and bleed out from a death-by-a-thousand-cuts.</p>
+
+        <p>The trend filter (price above 50-day SMA, 50-day above 200-day, both rising) is what makes TPB profitable in aggregate rather than just in cherry-picked examples. Without it, you&apos;re buying pullbacks in random stocks &mdash; which is statistically equivalent to flipping coins.</p>
+
+        <div class="callout">
+            <strong>The discipline question</strong>
+            Many traders abandon TPB during ranging markets, when the trend filter excludes most stocks and the strategy generates few signals. This is not a flaw &mdash; it&apos;s the strategy correctly telling you the conditions are wrong. Forcing signals during these periods is how the edge gets destroyed.
+        </div>
+
+        <h2>Where TPB fails</h2>
+
+        <p>No strategy works in all conditions. TPB has three known failure modes:</p>
+
+        <h3>Failure mode 1: Trend reversals</h3>
+
+        <p>The strategy assumes the existing uptrend will continue. When a stock is actually topping (transitioning from Stage 2 to Stage 3 in stage-analysis terms), pullbacks stop resolving upward. You&apos;ll see a series of "almost worked" trades that hit stop just barely, until you realize the regime has changed. Mitigation: pay attention to whether trades are making the expected progress. A losing streak in TPB often signals a market regime change, not bad luck.</p>
+
+        <h3>Failure mode 2: Gap risk</h3>
+
+        <p>TPB stops are placed below recent pullback lows. If a stock gaps down through your stop overnight (often on negative news, earnings, or sector-wide shocks), your actual exit is much worse than your planned stop. This is unavoidable in any swing strategy, but it&apos;s a real cost that doesn&apos;t show up in clean-looking backtests. Position size accordingly.</p>
+
+        <h3>Failure mode 3: Choppy markets</h3>
+
+        <p>During market environments where index breadth deteriorates &mdash; few stocks making new highs, most stocks ranging &mdash; TPB&apos;s hit rate drops. The trend filter qualifies stocks that look like uptrends but are actually short-lived rallies in a deteriorating market. Mitigation: reduce position size or pause new entries when broader market breadth turns negative.</p>
+
+        <h2>What makes TPB worth using</h2>
+
+        <p>Despite the failure modes, TPB has three structural advantages that make it durable:</p>
+
+        <ol>
+            <li><strong>It&apos;s mechanical.</strong> Every rule is testable. There&apos;s no "I felt the setup was right" judgment call. This eliminates a huge category of behavioral mistakes.</li>
+            <li><strong>It self-filters.</strong> The trend qualification step removes 80%+ of stocks at any given time. You only ever look at a small list of candidates. Less data to process means less analysis paralysis.</li>
+            <li><strong>It&apos;s well-defined enough to backtest.</strong> Every rule above can be coded. You can simulate it across years of historical data and know exactly what it would have done. Compare this to strategies built around vague concepts ("buy strong stocks at good levels") that can&apos;t be tested.</li>
+        </ol>
+
+        <h2>Performance considerations</h2>
+
+        <p>TPB is a positive-expectancy strategy in equity markets that have prevailing trends. Its specific performance &mdash; win rate, average win, average loss, profit factor, drawdown profile &mdash; depends on:</p>
+
+        <ul>
+            <li>The exact parameter choices (50-day vs 20-day SMA, 38.2% vs 50% retracement limits, etc.)</li>
+            <li>The universe of stocks tested (Nifty 50 vs Nifty 500 vs midcaps)</li>
+            <li>The time period (different decades have different trend persistence)</li>
+            <li>The realistic slippage and brokerage assumptions</li>
+        </ul>
+
+        <p>You can backtest TPB yourself in Tradosaurus with the parameter set above &mdash; and tune it tighter or looser based on whether you want fewer-higher-quality signals or more-frequent-lower-quality ones. Both ends of the spectrum can be profitable; they suit different temperaments.</p>
+
+        <p>One general observation that holds across most TPB implementations: <strong>win rates tend to be in the 40-50% range, with average winners larger than average losers.</strong> This is typical of trend-following strategies &mdash; you&apos;re wrong slightly more often than you&apos;re right, but when you&apos;re right, you&apos;re right by more. Beginners often find this disorienting because they expect a "good" strategy to win 70%+ of the time. Real trend-following strategies don&apos;t. They make money through asymmetry, not frequency.</p>
+
+        <h2>What this means for you</h2>
+
+        <p>If you&apos;re going to trade just one swing strategy, TPB is a defensible choice. The logic is intuitive, the rules are mechanical, and it works in the market conditions where most retail traders fail (because the trend filter forces you out of those conditions).</p>
+
+        <p>The next strategy article covers Darvas Box Breakout &mdash; a different approach that buys breakouts from defined consolidations rather than pullbacks. It&apos;s not strictly better or worse than TPB; it captures different market behavior. Many disciplined traders run both, taking signals from whichever fires first on a given setup.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to backtest this strategy on your own data?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>

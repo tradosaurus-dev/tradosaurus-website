@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelly Criterion for swing traders: useful or dangerous? &mdash; Tradosaurus Learn</title>
+    <meta name="description" content="The Kelly formula explained, why naive application destroys retail accounts, and the honest practical alternatives. When Kelly is useful, when it is dangerous, and what to actually use.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2314110E'/><path d='M8 22 L14 14 L18 18 L24 10' stroke='%231A6E3A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <style>
+        .article-hero { padding: var(--s-9) 0 var(--s-6); background: var(--paper); border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb { font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); }
+        .article-breadcrumb a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+        .article-breadcrumb a:hover { color: var(--accent); }
+        .article-hero h1 { font-family: var(--display); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 var(--s-5); max-width: 880px; }
+        .article-hero .article-meta { display: flex; gap: var(--s-5); font-family: var(--mono); font-size: 13px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; border-top: 1px solid var(--rule-soft); padding-top: var(--s-4); }
+        .article-hero .article-meta .difficulty { color: var(--accent); }
+        .article-body { padding: var(--s-7) 0 var(--s-9); font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+        .article-body p { margin: 0 0 var(--s-4); }
+        .article-body h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 36px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: var(--s-7) 0 var(--s-4); }
+        .article-body h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+        .article-body strong { color: var(--ink); }
+        .article-body a { color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none; }
+        .article-body a:hover { background: var(--accent-faint); }
+        .article-body ul, .article-body ol { margin: 0 0 var(--s-4) 0; padding-left: var(--s-5); }
+        .article-body li { margin-bottom: var(--s-2); }
+        .article-body code { font-family: var(--mono); background: var(--paper-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.92em; }
+        .pull-quote { border-left: 4px solid var(--accent); padding: var(--s-3) 0 var(--s-3) var(--s-5); margin: var(--s-5) 0; font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink); font-style: italic; }
+        .callout { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 8px; padding: var(--s-4) var(--s-5); margin: var(--s-5) 0; font-size: 16px; }
+        .callout strong { display: block; margin-bottom: var(--s-2); color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .callout.warn { border-left: 4px solid #C97A1F; }
+        .callout.warn strong { color: #C97A1F; }
+        .compare-table { border-collapse: collapse; width: 100%; margin: var(--s-5) 0; font-size: 15px; font-family: var(--mono); }
+        .compare-table th, .compare-table td { border-bottom: 1px solid var(--rule-soft); padding: var(--s-3) var(--s-3); text-align: left; vertical-align: top; }
+        .compare-table th { font-family: var(--display); font-size: 17px; color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
+        .compare-table td:first-child { font-family: var(--mono); color: var(--ink-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.06em; padding-right: var(--s-5); }
+        .math-box { background: var(--paper-bright); border: 1px solid var(--rule-soft); border-radius: 6px; padding: var(--s-5); margin: var(--s-5) 0; font-family: var(--mono); font-size: 16px; line-height: 1.6; }
+        .math-box .formula { font-size: 17px; color: var(--ink); margin: var(--s-3) 0; padding: var(--s-3); background: var(--paper); border-radius: 4px; text-align: center; font-weight: 500; }
+        .article-footer { padding: var(--s-7) 0; border-top: 1px solid var(--rule-soft); text-align: center; }
+        .article-footer p { color: var(--ink-muted); margin-bottom: var(--s-4); font-size: 15px; }
+    </style>
+</head>
+<body>
+<header class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#14110E"/>
+                    <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            Tradosaurus
+        </a>
+        <nav class="nav-links">
+            <a href="../index.html#numbers">Numbers</a>
+            <a href="../index.html#tour">Product</a>
+            <a href="../learn.html" class="active">Learn</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../download.html" class="btn btn-primary">Download <span class="arrow">&rarr;</span></a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+</header>
+<section class="article-hero">
+    <div class="container container-narrow">
+        <div class="article-breadcrumb">
+            <a href="../learn.html">Learn</a> &nbsp;&rsaquo;&nbsp; <a href="../learn.html#risk">Risk &amp; Money Management</a>
+        </div>
+        <h1>Kelly Criterion for swing traders: useful or dangerous?</h1>
+        <div class="article-meta">
+            <span class="difficulty">Advanced</span>
+            <span>19 min read</span>
+            <span>Updated May 2026</span>
+        </div>
+    </div>
+</section>
+<article class="article-body">
+    <div class="container container-narrow">
+
+        <p>In 1956, a Bell Labs researcher named John Kelly Jr. published a paper titled <em>A New Interpretation of Information Rate</em>. Buried in the math was a formula that turned out to have profound implications for gambling, trading, and capital allocation. The Kelly Criterion tells you, given your win rate and your win:loss ratio, the exact bet size that maximizes long-run growth of capital.</p>
+
+        <p>The mathematics is elegant. Edward Thorp used it to beat blackjack and then ran one of the most successful hedge funds of the 1970s-80s. Warren Buffett has spoken approvingly of Kelly principles. Books have been written extolling it as the secret to wealth.</p>
+
+        <p>And yet: <strong>most retail traders who learn Kelly end up using it to blow up their accounts.</strong> This article explains why, what the math actually says, and what the honest practical application looks like for a swing trader.</p>
+
+        <h2>The Kelly formula, in plain math</h2>
+
+        <p>The simplest form of Kelly applies to a binary bet (you win or you lose). The formula:</p>
+
+        <div class="math-box">
+            <div class="formula">f* = (p &times; b &minus; q) &divide; b</div>
+        </div>
+
+        <p>Where:</p>
+        <ul>
+            <li><strong>f*</strong> = the optimal fraction of capital to bet</li>
+            <li><strong>p</strong> = probability of winning</li>
+            <li><strong>q</strong> = probability of losing (1 &minus; p)</li>
+            <li><strong>b</strong> = the win:loss ratio (how much you win per unit risked)</li>
+        </ul>
+
+        <p>Concrete example. Your strategy wins 50% of the time, with average winners 2x average losers (2R winners vs 1R losers).</p>
+
+        <div class="math-box">
+            <div class="formula">f* = (0.5 &times; 2 &minus; 0.5) &divide; 2 = 0.5 &divide; 2 = 0.25</div>
+        </div>
+
+        <p>Kelly says: bet 25% of capital per trade.</p>
+
+        <p>That number is mathematically correct. It also will destroy a trading account in 12 months.</p>
+
+        <h2>Why Kelly works in theory</h2>
+
+        <p>Kelly maximizes the geometric growth rate of capital over many trades. If you could repeat the same bet thousands of times with stable probabilities and win:loss ratios, betting Kelly would produce the highest long-run capital. Bet less than Kelly and you&apos;re leaving growth on the table. Bet more than Kelly and your growth rate falls (and beyond about 2x Kelly, you eventually go broke even with a positive-edge strategy).</p>
+
+        <p>This proof is mathematically airtight, given the assumptions. The catch is that the assumptions never hold in real trading.</p>
+
+        <h2>Why Kelly fails in real trading &mdash; five reasons</h2>
+
+        <h3>Reason 1: You don&apos;t know your true probabilities</h3>
+
+        <p>Kelly requires you to know p (win rate) and b (win:loss ratio) precisely. In real trading, both are estimates from a finite backtest, with significant uncertainty. You think your strategy is 50% / 2R. The real numbers might be 45% / 1.7R, or 55% / 2.3R &mdash; you don&apos;t know within the precision Kelly requires.</p>
+
+        <p>Worse, the formula is non-linear in these inputs. A small overestimate of p produces a much larger overestimate of optimal Kelly fraction. If your true win rate is 45% but you think it&apos;s 50%, you&apos;ll bet way more than the actual optimal &mdash; and the consequences scale brutally.</p>
+
+        <h3>Reason 2: Your edge changes over time</h3>
+
+        <p>Kelly assumes p and b are stable. They&apos;re not. Markets go through regime changes; strategies go through degradation cycles; new participants arbitrage away old edges. Your strategy that looked like 50%/2R last year might be 40%/1.5R this year because too many people learned the same setup. Kelly calculated on the old numbers will overweight a strategy whose actual edge has shrunk.</p>
+
+        <h3>Reason 3: The drawdowns are unbearable</h3>
+
+        <p>Even when Kelly&apos;s estimate is correct, the path is psychologically impossible for most retail traders. Full Kelly betting on a 50%/2R strategy produces typical drawdowns in the 50-70% range. Not as a worst case &mdash; as a typical multi-year experience.</p>
+
+        <p class="pull-quote">
+            Kelly maximizes growth assuming you can sit through any drawdown without flinching. No human can. The drawdowns Kelly produces are not survivable for retail accounts where the trader actually has to sleep at night.
+        </p>
+
+        <p>Refer back to the recovery math from the previous article. A 60% drawdown requires 150% gain to recover. Even at full Kelly&apos;s aggressive expected return, that&apos;s 3-5 years. Most traders quit during that recovery, locking in catastrophic losses.</p>
+
+        <h3>Reason 4: The math assumes simultaneous opportunities you don&apos;t have</h3>
+
+        <p>The classic Kelly proof assumes you can either bet or not bet on each independent opportunity. In real trading, you have multiple positions open simultaneously, often in correlated assets. Five Kelly-sized bets on five correlated stocks is dramatically riskier than the math suggests, because the correlation means the bets effectively combine into one larger bet.</p>
+
+        <p>Adjusting Kelly for correlation requires complex math that most retail applications skip entirely.</p>
+
+        <h3>Reason 5: Indian retail constraints make it worse</h3>
+
+        <p>Kelly examples often come from market-making or quant contexts with very fast feedback loops and tight execution. Retail Indian swing trading has slow feedback (you find out if a strategy is working over months, not minutes), high execution friction (slippage, brokerage, taxes), and meaningful position-size minimums (you can&apos;t buy 0.7 shares of a stock). All of this makes Kelly&apos;s theoretical optimum even less applicable.</p>
+
+        <h2>Fractional Kelly &mdash; the practical adaptation</h2>
+
+        <p>Most disciplined traders who use Kelly at all use <strong>fractional Kelly</strong>: betting some fraction of what the full formula recommends. Common choices: half-Kelly (bet 50% of full Kelly), quarter-Kelly (bet 25% of full Kelly), or even tenth-Kelly.</p>
+
+        <p>The rationale: fractional Kelly trades a small reduction in expected long-run growth for a large reduction in drawdown depth. The math says half-Kelly captures roughly 75% of full Kelly&apos;s long-run growth with about half the drawdown. That&apos;s an excellent trade-off for any human trader.</p>
+
+        <p>Going back to the earlier example (50%/2R strategy, full Kelly = 25%):</p>
+
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Bet size</th>
+                    <th>Expected drawdown</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Full Kelly</td><td>25% per trade</td><td>50-70%+</td></tr>
+                <tr><td>Half Kelly</td><td>12.5% per trade</td><td>30-40%</td></tr>
+                <tr><td>Quarter Kelly</td><td>6.25% per trade</td><td>15-25%</td></tr>
+                <tr><td>Tenth Kelly</td><td>2.5% per trade</td><td>8-15%</td></tr>
+                <tr><td>Fixed fractional 0.5%</td><td>0.5% per trade</td><td>5-10%</td></tr>
+            </tbody>
+        </table>
+
+        <p>Notice the bottom row: a flat 0.5% risk per trade is roughly equivalent to one-fiftieth of full Kelly for this strategy. That&apos;s why the position-sizing article recommended 0.5% as the default for retail traders &mdash; it gives up theoretical growth in exchange for survivable drawdowns.</p>
+
+        <h2>The honest assessment of Kelly for swing traders</h2>
+
+        <p>For 95% of retail Indian swing traders, the practical answer is: <strong>don&apos;t use Kelly. Use fixed fractional position sizing at 0.5% of capital per trade, as covered earlier in this series.</strong></p>
+
+        <p>Three reasons:</p>
+
+        <ol>
+            <li><strong>Your edge estimates aren&apos;t precise enough.</strong> Kelly requires win-rate accuracy that retail traders don&apos;t have. The math is hyper-sensitive to input errors. Fixed fractional is much more forgiving.</li>
+            <li><strong>The drawdowns of even fractional Kelly are larger than fixed fractional.</strong> A 0.5% fixed sizer typically experiences 15-25% drawdowns. Even quarter-Kelly produces 20-30%. The smaller drawdowns of fixed sizing make psychological survival much more likely.</li>
+            <li><strong>The growth-rate gain from Kelly is smaller than it sounds.</strong> Yes, Kelly maximizes long-run growth. But "long-run" can mean 20+ years for noisy strategies. Most traders don&apos;t survive 20 years of trading the same system. The theoretical advantage doesn&apos;t materialize for traders who quit during the rough years.</li>
+        </ol>
+
+        <h2>When Kelly makes sense (and the rare cases for retail)</h2>
+
+        <p>Kelly is genuinely useful in specific contexts:</p>
+
+        <ul>
+            <li><strong>You have an extremely high-precision edge estimate.</strong> Quant funds with thousands of trades per day on very stable strategies can estimate p and b precisely. They use Kelly principles (often heavily fractional). Retail traders almost never have this precision.</li>
+            <li><strong>You have access to scale.</strong> If you can run the strategy across hundreds of independent opportunities simultaneously, the law of large numbers smooths out the bet-size uncertainty. Retail trading 10-15 simultaneous positions doesn&apos;t qualify as &quot;scale&quot; for these purposes.</li>
+            <li><strong>You&apos;re emotionally indifferent to drawdowns.</strong> A small minority of traders genuinely don&apos;t experience drawdown stress. They can sit through 50% declines without behavioral mistakes. For these traders, full Kelly might be operationally feasible. Most people who think they fall in this category don&apos;t.</li>
+        </ul>
+
+        <p>For the rest of us, the practical takeaway is: <strong>Kelly is a useful framework for thinking about position sizing, but the formula itself should not drive real trade sizing</strong>. The framework teaches you that there&apos;s an optimal bet size and that overbetting destroys growth even with a real edge. The formula itself, applied directly, will overweight your trades for reasons we&apos;ve covered.</p>
+
+        <h2>The right way to use Kelly thinking</h2>
+
+        <p>Use Kelly as a sanity check, not a sizing rule:</p>
+
+        <ol>
+            <li>Calculate your strategy&apos;s rough Kelly fraction based on backtest stats.</li>
+            <li>Divide by 10 (use one-tenth of full Kelly) as a defensible upper bound.</li>
+            <li>Compare to your fixed-fractional risk per trade. If your fixed-fractional sizing is much smaller than tenth-Kelly, you&apos;re reasonable. If it&apos;s much larger, you&apos;re overbetting.</li>
+        </ol>
+
+        <p>Concrete example. Strategy backtests at 50% win rate, 2R winners. Full Kelly = 25%. Tenth-Kelly = 2.5%. Your fixed-fractional rule says risk 0.5% per trade. The 0.5% is well below 2.5% &mdash; you&apos;re sizing conservatively, which is correct.</p>
+
+        <p>Reverse case. Strategy backtests at 70% win rate, 1.5R winners. Full Kelly = 50%. Tenth-Kelly = 5%. Your rule says risk 3% per trade. You&apos;re close to tenth-Kelly already &mdash; that&apos;s the upper bound of defensible aggressive sizing. Probably reduce to 1.5-2% to give yourself drawdown buffer.</p>
+
+        <p>This is Kelly as a sanity check. The formula tells you where the danger zone starts. Your actual sizing should be well below that line.</p>
+
+        <h2>The deeper lesson</h2>
+
+        <p>The Kelly story is a microcosm of a broader trading truth: <strong>mathematical elegance often misleads, because real trading violates the assumptions math requires.</strong> The formula is correct given its assumptions. The assumptions don&apos;t hold. The result is that na&iuml;vely applying the math produces worse outcomes than ignoring it.</p>
+
+        <p>This applies far beyond Kelly. Optimal portfolio theory has the same problem. Black-Scholes option pricing has the same problem. Every clean mathematical framework in finance has the same problem: the math is right, the assumptions are wrong, and traders who apply formulas without understanding the assumptions end up worse off than traders who use rough heuristics that account for messy reality.</p>
+
+        <div class="callout warn">
+            <strong>The pattern to recognize</strong>
+            Whenever a trading concept claims mathematical optimality, ask three questions: What assumptions does the math require? Do those assumptions hold in real trading? What happens to the result if the assumptions are violated? If the answer to any of these is uncomfortable, the concept is more interesting as theory than as practice.
+        </div>
+
+        <h2>What this means for you</h2>
+
+        <p>If you&apos;ve been considering Kelly-based sizing, the practical answer is: don&apos;t, at least not directly. Use 0.5% fixed-fractional sizing as covered in the position-sizing article. Once you have hundreds of trades of verified live (not backtested) performance and you&apos;ve survived multiple real drawdowns without behavioral mistakes, consider scaling up &mdash; but to 1-2% per trade, not to anything resembling full Kelly.</p>
+
+        <p>The thing the Kelly story teaches is more important than the formula itself: <strong>position sizing has a maximum, beyond which you destroy returns even with a real edge.</strong> Most retail traders are nowhere near that maximum. They lose money for completely different reasons (poor strategy selection, bad execution, lack of discipline). For them, the question of optimal sizing is academic &mdash; survival sizing comes first, optimization comes much later.</p>
+
+        <p>This concludes the Risk &amp; Money Management series. Across these four articles, you&apos;ve seen the four pieces that determine whether trading compounds your capital or grinds it away: position sizing, stop-loss discipline, drawdown survival, and the math of optimal bet sizing. None of these are exciting. All of them matter more than any strategy choice you&apos;ll ever make.</p>
+
+    </div>
+</article>
+<section class="article-footer">
+    <div class="container container-narrow">
+        <p>Want to test your risk math on real backtests?</p>
+        <a href="../download.html" class="btn btn-primary">Download Tradosaurus &rarr;</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand" style="color: var(--ink-on-dark)">
+                    <span class="brand-mark">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#F5F1E8"/>
+                            <path d="M8 22 L14 14 L18 18 L24 10" stroke="#1A6E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Tradosaurus
+                </div>
+                <p>Swing trading, backed by numbers. Made in India &#127470;&#127475;</p>
+            </div>
+            <div><h4>Product</h4><ul>
+                <li><a href="../index.html#numbers">The numbers</a></li>
+                <li><a href="../index.html#tour">Product tour</a></li>
+                <li><a href="../index.html#pricing">Pricing</a></li>
+                <li><a href="../download.html">Download</a></li>
+            </ul></div>
+            <div><h4>Learn</h4><ul>
+                <li><a href="../learn.html#foundations">Foundations</a></li>
+                <li><a href="../learn.html#strategies">Strategy deep dives</a></li>
+                <li><a href="../learn.html#risk">Risk management</a></li>
+                <li><a href="../learn.html#indian-markets">Indian markets</a></li>
+            </ul></div>
+            <div><h4>Legal</h4><ul>
+                <li><a href="../disclaimer.html">Disclaimer</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../refund.html">Refund policy</a></li>
+                <li><a href="../terms.html">Terms of service</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Tradosaurus. All rights reserved.</span>
+            <span>Educational tool. Not investment advice. Trading involves risk.</span>
+        </div>
+    </div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+const navToggle = document.getElementById('navToggle');
+if (navToggle) navToggle.addEventListener('click', () => nav.classList.toggle('menu-open'));
+</script>
+</body>
+</html>
